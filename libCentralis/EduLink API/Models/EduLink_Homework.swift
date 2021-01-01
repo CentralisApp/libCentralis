@@ -2,7 +2,7 @@
 //  EduLink_Homework.swift
 //  Centralis
 //
-//  Created by [redacted] on 05/12/2020.
+//  Created by AW on 05/12/2020.
 //
 
 import Foundation

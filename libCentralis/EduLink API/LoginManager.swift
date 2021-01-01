@@ -2,7 +2,7 @@
 //  LoginManager.swift
 //  Centralis
 //
-//  Created by [redacted] on 30/11/2020.
+//  Created by AW on 30/11/2020.
 //
 
 import UIKit

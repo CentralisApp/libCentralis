@@ -2,7 +2,7 @@
 //  KeychainManager.swift
 //  Centralis
 //
-//  Created by [redacted] on 29/12/2020.
+//  Created by AW on 29/12/2020.
 //https://stackoverflow.com/a/37539998
 
 import Security

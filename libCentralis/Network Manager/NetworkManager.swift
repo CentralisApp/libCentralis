@@ -2,7 +2,7 @@
 //  NetworkManager.swift
 //  Shade
 //
-//  Created by [redacted] on 18/10/2020.
+//  Created by AW on 18/10/2020.
 //
 
 import Foundation

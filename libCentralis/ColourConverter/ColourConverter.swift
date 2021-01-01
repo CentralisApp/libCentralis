@@ -2,7 +2,7 @@
 //  ColourConverter.swift
 //  Centralis
 //
-//  Created by [redacted] on 18/12/2020.
+//  Created by AW on 18/12/2020.
 //
 
 import UIKit

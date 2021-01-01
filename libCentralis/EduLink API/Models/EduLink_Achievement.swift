@@ -2,7 +2,7 @@
 //  EduLink_Achievement.swift
 //  Centralis
 //
-//  Created by [redacted] on 03/12/2020.
+//  Created by AW on 03/12/2020.
 //
 
 import UIKit

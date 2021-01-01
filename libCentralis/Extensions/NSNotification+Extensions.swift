@@ -2,7 +2,7 @@
 //  NSNotification+Extensions.swift
 //  Shade
 //
-//  Created by [redacted] on 26/10/2020.
+//  Created by AW on 26/10/2020.
 //
 
 import Foundation

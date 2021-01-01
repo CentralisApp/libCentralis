@@ -2,7 +2,7 @@
 //  EduLink_TimeTable.swift
 //  Centralis
 //
-//  Created by [redacted] on 08/12/2020.
+//  Created by AW on 08/12/2020.
 //
 
 import Foundation

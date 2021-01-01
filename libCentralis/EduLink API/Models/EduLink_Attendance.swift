@@ -2,7 +2,7 @@
 //  EduLink_Attendance.swift
 //  Centralis
 //
-//  Created by [redacted] on 19/12/2020.
+//  Created by AW on 19/12/2020.
 //
 
 import UIKit

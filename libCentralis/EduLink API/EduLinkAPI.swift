@@ -2,7 +2,7 @@
 //  EduLinkAPI.swift
 //  Centralis
 //
-//  Created by [redacted] on 29/11/2020.
+//  Created by AW on 29/11/2020.
 //
 
 import UIKit
