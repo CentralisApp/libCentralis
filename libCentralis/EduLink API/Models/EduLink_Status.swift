@@ -14,7 +14,7 @@ public class EduLink_Status {
         let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Status\",\"params\":{\"last_visible\":0,\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
         NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Error") }
-            guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurrsed") }
+            guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, "Unknown Error Ocurred") }
             EduLinkAPI.shared.status.new_messages = result["new_messages"] as? Int ?? 0
             EduLinkAPI.shared.status.new_forms = result["new_forms"] as? Int ?? 0
