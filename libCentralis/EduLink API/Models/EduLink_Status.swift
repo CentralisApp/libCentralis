@@ -26,8 +26,8 @@ public class EduLink_Status {
                 if let current = lessons["current"] as? [String : Any] {
                     EduLinkAPI.shared.status.current = self.generateLesson(current)
                 }
-                if let upcoming = lessons["upcoming"] as? [String : Any] {
-                    EduLinkAPI.shared.status.upcoming = self.generateLesson(upcoming)
+                if let next = lessons["next"] as? [String : Any] {
+                    EduLinkAPI.shared.status.upcoming = self.generateLesson(next)
                 }
             }
             rootCompletion(true, nil)
