@@ -36,21 +36,21 @@ public class EduLink_Status {
     
     class private func generateLesson(_ lesson: [String : Any]) -> MiniLesson {
         var ml = MiniLesson()
-        if let room = lesson["room"] as? [String : Any] { ml.room = room["name"] as? String ?? "Not Given" } else { ml.room = "Not Given" }
-        if let tg = lesson["teaching_group"] as? [String : Any] { ml.subject = tg["subject"] as? String ?? "Not Given" } else { ml.subject = "Not Given" }
-        if let start_time = lesson["start_time"] as? String { ml.startDate = self.dateFromTime(start_time) } else { ml.startDate = Date() }
-        if let end_time = lesson["end_time"] as? String { ml.endDate = self.dateFromTime(end_time) } else { ml.endDate = Date() }
+        if let room = lesson["room"] as? [String : Any] { ml.room = room["name"] as? String ?? "Not Given" }
+        if let tg = lesson["teaching_group"] as? [String : Any] { ml.subject = tg["subject"] as? String ?? "Not Given" }
+        if let start_time = lesson["start_time"] as? String { ml.startDate = self.dateFromTime(start_time) }
+        if let end_time = lesson["end_time"] as? String { ml.endDate = self.dateFromTime(end_time) }
         return ml
     }
     
-    class private func dateFromTime(_ time: String) -> Date {
+    class private func dateFromTime(_ time: String) -> Date? {
         let calendar = NSCalendar.current
         var components = calendar.dateComponents([.day,.month,.year], from: Date())
         let hour = time.components(separatedBy: ":")[0]
         let minute = time.components(separatedBy: ":")[1]
         components.hour = Int(hour) ?? 0
         components.minute = Int(minute) ?? 0
-        return calendar.date(from: components) ?? Date()
+        return calendar.date(from: components)
     }
 }
 
