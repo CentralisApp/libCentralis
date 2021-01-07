@@ -19,12 +19,26 @@ public class EduLink_Status {
             EduLinkAPI.shared.status.new_messages = result["new_messages"] as? Int ?? 0
             EduLinkAPI.shared.status.new_forms = result["new_forms"] as? Int ?? 0
             if let session = result["session"] as? [String : Any] {
-                let date = Date()
                 let interval: TimeInterval = Double(session["expires"] as? Int ?? 0)
-                EduLinkAPI.shared.status.expires = date + interval
+                EduLinkAPI.shared.status.expires = Date() + interval
+            }
+            if let lessons = result["lessons"] as? [String : Any] {
+                if let current = lessons["current"] as? [String : Any] {
+                    EduLinkAPI.shared.status.current = generateLesson(current)
+                }
+                if let upcoming = lessons["upcoming"] as? [String : Any] {
+                    EduLinkAPI.shared.status.upcoming = generateLesson(upcoming)
+                }
             }
             rootCompletion(true, nil)
         })
+    }
+    
+    class private func generateLesson(_ lesson: [String : Any]) -> MiniLesson {
+        var ml = MiniLesson()
+        if let room = lesson["room"] as? [String : Any] { ml.room = room["name"] as? String ?? "Not Given" } else { ml.room = "Not Given" }
+        if let tg = lesson["teaching_group"] as? [String : Any] { ml.subject = tg["subject"] as? String ?? "Not Given" } else { ml.subject = "Not Given" }
+        return ml
     }
 }
 
@@ -32,6 +46,8 @@ public struct Status {
     public var new_messages: Int!
     public var new_forms: Int!
     public var expires: Date?
+    public var current: MiniLesson!
+    public var upcoming: MiniLesson!
     
     public init() {}
     
@@ -42,4 +58,10 @@ public struct Status {
             }
         }
     }
+}
+
+public struct MiniLesson {
+    public var date: Date?
+    public var room: String!
+    public var subject: String!
 }
