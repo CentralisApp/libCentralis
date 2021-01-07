@@ -21,7 +21,10 @@ public class LoginManager {
         if self.schoolCode == "DemoSchool" {
             EduLinkAPI.shared.authorisedSchool.server = "https://demoapi.elihc.dev/api/uwu"
             EduLinkAPI.shared.authorisedSchool.school_id = "1"
-            return rootCompletion(true, nil)
+            self.schoolInfoz({ (success, error) -> Void in
+                return rootCompletion(success, error)
+            })
+            return
         }
         
         let body = "{\"jsonrpc\":\"2.0\",\"method\":\"School.FromCode\",\"params\":{\"code\":\"\(schoolCode!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
