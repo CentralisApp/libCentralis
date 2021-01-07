@@ -24,10 +24,10 @@ public class EduLink_Status {
             }
             if let lessons = result["lessons"] as? [String : Any] {
                 if let current = lessons["current"] as? [String : Any] {
-                    EduLinkAPI.shared.status.current = generateLesson(current)
+                    EduLinkAPI.shared.status.current = self.generateLesson(current)
                 }
                 if let upcoming = lessons["upcoming"] as? [String : Any] {
-                    EduLinkAPI.shared.status.upcoming = generateLesson(upcoming)
+                    EduLinkAPI.shared.status.upcoming = self.generateLesson(upcoming)
                 }
             }
             rootCompletion(true, nil)
@@ -38,7 +38,19 @@ public class EduLink_Status {
         var ml = MiniLesson()
         if let room = lesson["room"] as? [String : Any] { ml.room = room["name"] as? String ?? "Not Given" } else { ml.room = "Not Given" }
         if let tg = lesson["teaching_group"] as? [String : Any] { ml.subject = tg["subject"] as? String ?? "Not Given" } else { ml.subject = "Not Given" }
+        if let start_time = lesson["start_time"] as? String { ml.startDate = self.dateFromTime(start_time) } else { ml.startDate = Date() }
+        if let end_time = lesson["end_time"] as? String { ml.endDate = self.dateFromTime(end_time) } else { ml.endDate = Date() }
         return ml
+    }
+    
+    class private func dateFromTime(_ time: String) -> Date {
+        let calendar = NSCalendar.current
+        var components = calendar.dateComponents([.day,.month,.year], from: Date())
+        let hour = time.components(separatedBy: ":")[0]
+        let minute = time.components(separatedBy: ":")[1]
+        components.hour = Int(hour) ?? 0
+        components.minute = Int(minute) ?? 0
+        return calendar.date(from: components) ?? Date()
     }
 }
 
@@ -61,7 +73,8 @@ public struct Status {
 }
 
 public struct MiniLesson {
-    public var date: Date?
+    public var startDate: Date?
+    public var endDate: Date?
     public var room: String!
     public var subject: String!
 }
