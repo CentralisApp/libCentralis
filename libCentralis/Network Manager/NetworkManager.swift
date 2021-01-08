@@ -11,7 +11,7 @@ public typealias completionHandler = (_ success: Bool, _ error: String?) -> ()
 
 public class NetworkManager {
 
-    typealias requestDictCompletion = (_ success: Bool, _ dict: [String : Any]) -> ()
+    public typealias requestDictCompletion = (_ success: Bool, _ dict: [String : Any]) -> ()
     
     public func generateStringFromDict(_ dict: [String : String]) -> String {
         let encoder = JSONEncoder()
@@ -23,7 +23,7 @@ public class NetworkManager {
         return "Error"
     }
     
-    class func requestWithDict(url: URL, method: String, headers: [String : String]?, jsonbody: String?, completion: @escaping requestDictCompletion) {
+    class public func requestWithDict(url: URL, method: String, headers: [String : String]?, jsonbody: String?, completion: @escaping requestDictCompletion) {
         var request = URLRequest(url: url)
         request.httpMethod = method
         request.httpBody = jsonbody?.data(using: .utf8)
