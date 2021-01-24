@@ -22,7 +22,7 @@
         <a class="header-link" href="index.html">
           libCentralis Docs
         </a>
-         (72% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -265,7 +265,11 @@
 
 <p>A Swift library for using the EduLink API. </p>
 
-<p>As of writing this, no documentation exists from Overnet, so I decided to make my own through reverse engineering </p>
+<p>This library is fully documented now <a href="https://docs.centralis.app">here</a></p>
+
+<p>For building the docs, you need Jazzy installed, and run the command:</p>
+<pre class="highlight plaintext"><code>jazzy --build-tool-arguments -Xswiftc,-sdk,-Xswiftc,`xcrun --sdk iphonesimulator --show-sdk-path`,-Xswiftc,-target,-Xswiftc,x86_64-apple-ios14.3-simulator
+</code></pre>
 
           </div>
         </section>

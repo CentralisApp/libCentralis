@@ -55,11 +55,18 @@ public class EduLink_Documents {
     }
 }
 
+/// The container for Document
 public struct Document {
+    /// The ID of the document
     public var id: String!
+    /// The title of the document
     public var summary: String!
+    /// The format of the document
     public var type: String!
+    /// When the document was last updated
     public var last_updated: String!
+    /// The data of the document
     public var data: String!
+    /// The mime type of the document
     public var mime_type: String!
 }

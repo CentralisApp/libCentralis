@@ -93,6 +93,7 @@ public struct AttendanceValue {
     /// The number of late marks
     public var late: Int!
     
+    /// The init method, sets all values to 0
     init() {
         self.present = 0
         self.unauthorised = 0
@@ -112,6 +113,7 @@ public struct AttendanceColours {
     /// The colour for late marks
     public var late: UIColor!
     
+    /// Sets the colour of all the values, based on their string names
     public init() {
         let c = ColourConverter()
         self.present = c.colourFromString("Present")
