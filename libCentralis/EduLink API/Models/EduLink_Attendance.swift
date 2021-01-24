@@ -48,18 +48,16 @@ public class EduLink_Attendance {
                 for statutory in statutory {
                     var s = AttendanceStatutory()
                     s.month = statutory["month"] as? String ?? "Not Given"
-                    if let values = statutory["values"] as? [String : Any] {
-                        var av = AttendanceValue()
-                        av.present = values["present"] as? Int ?? 0
-                        av.late = values["late"] as? Int ?? 0
-                        av.unauthorised = values["unauthorised"] as? Int ?? 0
-                        av.absent = values["absent"] as? Int ?? 0
-                        s.values = av
-                        EduLinkAPI.shared.attendance.statutoryyear.values.present += av.present
-                        EduLinkAPI.shared.attendance.statutoryyear.values.absent += av.absent
-                        EduLinkAPI.shared.attendance.statutoryyear.values.late += av.late
-                        EduLinkAPI.shared.attendance.statutoryyear.values.unauthorised += av.unauthorised
-                    }
+                    var av = AttendanceValue()
+                    av.present = statutory["present"] as? Int ?? 0
+                    av.late = statutory["late"] as? Int ?? 0
+                    av.unauthorised = statutory["unauthorised"] as? Int ?? 0
+                    av.absent = statutory["absent"] as? Int ?? 0
+                    s.values = av
+                    EduLinkAPI.shared.attendance.statutoryyear.values.present += av.present
+                    EduLinkAPI.shared.attendance.statutoryyear.values.absent += av.absent
+                    EduLinkAPI.shared.attendance.statutoryyear.values.late += av.late
+                    EduLinkAPI.shared.attendance.statutoryyear.values.unauthorised += av.unauthorised
                     if let exceptions = statutory["exceptions"] as? [[String : Any]] {
                         for exception in exceptions {
                             var e = AttendanceException()
