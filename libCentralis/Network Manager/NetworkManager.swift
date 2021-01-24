@@ -9,11 +9,11 @@ import Foundation
 
 public typealias completionHandler = (_ success: Bool, _ error: String?) -> ()
 
-public class NetworkManager {
+internal class NetworkManager {
 
-    public typealias rdc = (_ success: Bool, _ dict: [String : Any]) -> ()
+    internal typealias rdc = (_ success: Bool, _ dict: [String : Any]) -> ()
     
-    public func generateStringFromDict(_ dict: [String : String]) -> String {
+    internal func generateStringFromDict(_ dict: [String : String]) -> String {
         let encoder = JSONEncoder()
         if let jsonData = try? encoder.encode(dict) {
             if let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -23,7 +23,7 @@ public class NetworkManager {
         return "Error"
     }
     
-    class public func requestWithDict(url: String?, requestMethod: String, params: [String : String], completion: @escaping rdc) {
+    class internal func requestWithDict(url: String?, requestMethod: String, params: [String : String], completion: @escaping rdc) {
         var c = URLComponents(string: url ?? EduLinkAPI.shared.authorisedSchool.server!)!
         c.queryItems = [URLQueryItem(name: "method", value: requestMethod)]
         var request = URLRequest(url: c.url!)
@@ -47,7 +47,7 @@ public class NetworkManager {
     }
 }
 
-struct EdulinkBody: Encodable {
+fileprivate struct EdulinkBody: Encodable {
     var jsonrpc = "2.0"
     var method: String!
     var uuid = UUID.uuid
