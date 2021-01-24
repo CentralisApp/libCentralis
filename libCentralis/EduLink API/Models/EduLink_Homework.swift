@@ -7,8 +7,10 @@
 
 import Foundation
 
+/// A model for working with homework
 public class EduLink_Homework {
-    
+    /// Retrieve a list of current and past homework of the user. For more documentation see `Homeworks`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func homework(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
@@ -29,6 +31,12 @@ public class EduLink_Homework {
         })
     }
     
+    /// Retrieve the description of a homework
+    /// - Parameters:
+    ///   - index: The array index of the homework in it's respective array
+    ///   - homework: The homework object
+    ///   - context: If the homework is current or past
+    ///   - rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func homeworkDetails(_ index: Int!, _ homework: Homework!, _ context: HomeworkContext, _ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken,
@@ -51,6 +59,12 @@ public class EduLink_Homework {
         })
     }
     
+    /// Toggle if a homework is marked as completed or not
+    /// - Parameters:
+    ///   - completed: If the homework should be marked as completed or not
+    ///   - index: The array index of the homework in it's respective array
+    ///   - context: If the homework is current or past
+    ///   - rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func completeHomework(_ completed: Bool, _ index: Int, _ context: HomeworkContext, _ rootCompletion: @escaping completionHandler) {
         let homework: Homework!
         switch context{
@@ -76,7 +90,7 @@ public class EduLink_Homework {
         })
     }
     
-    class public func scrapeLeWork(_ context: HomeworkContext, dict: [[String : Any]]) {
+    class private func scrapeLeWork(_ context: HomeworkContext, dict: [[String : Any]]) {
         switch context {
         case .current: EduLinkAPI.shared.homework.current.removeAll()
         case .past: EduLinkAPI.shared.homework.past.removeAll()
@@ -106,27 +120,46 @@ public class EduLink_Homework {
     
 }
 
+/// A container for current and past homeworks
 public struct Homeworks {
+    /// An array of current homeworks, for more documentation see `Homework`
     public var current = [Homework]()
+    /// An array of past homeworks, for more documentation see `Homework`
     public var past = [Homework]()
 }
 
+/// A container for Homework
 public struct Homework {
+    /// The ID of the homework
     public var id: String!
+    /// The title of the homework
     public var activity: String!
+    /// The subject of the homework
     public var subject: String!
+    /// The due date of the homework
     public var due_date: String!
+    /// The date of when the homework was made available
     public var available_date: String!
+    /// Is the homework marked as completed
     public var completed: Bool!
+    /// The teacher who set the homework
     public var set_by: String!
+    /// The set due text
     public var due_text: String!
+    /// The set available text
     public var available_text: String!
+    /// The status of the homework
     public var status: String!
+    /// The description of the homework
     public var description: String!
+    /// The source of the homework
     public var source: String!
 }
 
+/// An enum for if the homework is current or past
 public enum HomeworkContext {
+    /// If the homework is set for a date in the future
     case current
+    /// If the homework due date has passed
     case past
 }

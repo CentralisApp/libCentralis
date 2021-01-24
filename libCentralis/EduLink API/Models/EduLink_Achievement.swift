@@ -7,9 +7,9 @@
 
 import UIKit
 
+/// A model for working with Achievements and Behaviours
 public class EduLink_Achievement {
-    
-    class public func achievementBehaviourLookups(_ rootCompletion: @escaping completionHandler) {
+    class private func achievementBehaviourLookups(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
         ]
@@ -22,6 +22,8 @@ public class EduLink_Achievement {
         })
     }
     
+    /// Retrieve the achievements of the user, for more documentation see `Achievement`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func achievement(_ zCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -61,6 +63,8 @@ public class EduLink_Achievement {
         })
     }
     
+    /// Retrieve the behaviours of the user, for more documentation see `Behaviour`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func behaviour(_ zCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -137,7 +141,7 @@ public class EduLink_Achievement {
         })
     }
     
-    class public func scrapeAllNeededData(_ result: [String : Any]) {
+    class private func scrapeAllNeededData(_ result: [String : Any]) {
         if let achievement_types = result["achievement_types"] as? [[String : Any]] {
             EduLinkAPI.shared.achievementBehaviourLookups.achievement_types.removeAll()
             for achievement_type in achievement_types {
@@ -256,112 +260,196 @@ public class EduLink_Achievement {
     }
 }
 
-
+/// A container for Detention
 public struct Detention {
+    /// If the detention was attended
     public var attended: String!
+    /// Reason for not attending
     public var non_attendance_reason: String!
+    /// The ID of the detention
     public var id: String!
+    /// The description of the detention
     public var description: String!
+    /// The start time of the detention
     public var start_time: String!
+    /// The end time of the detention
     public var end_time: String!
+    /// The location of the detention
     public var location: String!
+    /// The date of the detention
     public var date: String!
 }
 
+/// A container for Behaviour For Lesson Values
 public struct B4LValue {
+    /// The name of the behaviour type
     public var name: String!
+    /// The count of the behaviour type
     public var count: Int!
 }
 
+/// A container for BehaviourForLesson
 public struct BehaviourForLesson {
+    /// The subject of the lesson
     public var subject: String!
+    /// An array of values for the subject, for more documentation see `B4LValue`
     public var values = [B4LValue]()
 }
 
+/// A container for an Achievement
 public struct Achievement {
+    /// The ID of the achievement
     public var id: String!
+    /// The type ID's of the achievement. For more documentation see `AchievementType`
     public var type_ids: [Int]!
+    /// The activity ID's of the achievement. For more documentation see `AchievementActivityType`
     public var activity_id: String!
+    /// The date of the achievement
     public var date: String!
+    /// The ID of the employee who gave the achievement. For more documentation see `Employee`
     public var employee_id: String!
+    /// The comments given by the teacher
     public var comments: String!
+    /// The total points the achievement was worth
     public var points: Int!
+    /// The information for the lesson during the achievement
     public var lesson_information: String!
+    /// If the achievement is shown to the user
     public var live: Bool!
 }
 
+/// A container for a Behaviour
 public struct Behaviour {
+    /// The ID of the behaviour
     public var id: String!
+    /// The type ID's of the behaviour, for more documentation see `BehaviourType`
     public var type_ids: [Int]!
+    /// The activity ID's of the behaviour, for more documentation see `BehaviourActivityType`
     public var activity_id: String!
+    /// The date of the behaviour
     public var date: String!
+    /// The time ID for the behaviour
     public var time_id: String!
+    /// The status ID of the behaviour
     public var status_id: String!
+    /// The bullying type ID
     public var bullying_type_id: String!
+    /// The location ID for the behaviour
     public var location_id: String!
+    /// The action ID for the behaviour
     public var action_id: String!
+    /// The action date of the behaviour
     public var action_date: String!
+    /// The recorded ID of the behaviour
     public var recorded_id: String!
+    /// The information for the lesson during the behaviour
     public var lesson_information: String!
+    /// The comments given by the teacher
     public var comments: String!
+    /// The total points the behaviour was worth
     public var points: Int!
 }
 
+/// A container for AchievementType
 public struct AchievementType {
+    /// The ID of the achievement type
     public var id: String!
+    /// If the achievement type is active
     public var active: Bool!
+    /// The code for the achievement type
     public var code: String!
+    /// The description for the achievement type
     public var description: String!
+    /// The position of the achievement type
     public var position: Int!
+    /// How many points that type is worth
     public var points: Int!
+    /// If the type is in the school system
     public var system: Bool!
 }
 
+/// A container for AchievementActivityType
 public struct AchievementActivityType {
+    /// The ID of the achievement activity type
     public var id: String!
+    /// The code for the achievement activity type
     public var code: String!
+    /// The description for the achievement activity type
     public var description: String!
+    /// If the activity type is active
     public var active: Bool!
 }
 
+/// A container for Behaviour Type
 public struct BehaviourType {
+    /// The ID of the behaviour type
     public var id: String!
+    /// If the behaviour type is active
     public var active: Bool!
+    /// The code for the behaviour type
     public var code: String!
+    /// The description for the behaviour type
     public var description: String!
+    /// The position for the behaviour type
     public var position: Int!
+    /// How many points the behaviour type is worth
     public var points: Int!
+    /// If the type is in the school system
     public var system: Bool!
+    /// If the type should be included in the register
     public var include_in_register: Bool!
+    /// If the type is a type of bullying
     public var is_bullying_type: Bool!
 }
 
+/// A container for BehaviourActivityType
 public struct BehaviourActivityType {
+    /// The ID for the activity type
     public var id: String!
+    /// The code for the activity type
     public var code: String!
+    /// The description for the activity type
     public var description: String!
+    /// If the activity type is active
     public var active: Bool!
 }
 
+/// A mass container for achievements, behaviours. detensions, behaviour in lesson, and types
 public struct AchievementBehaviourLookup {
+    /// An array of achievements, for more documentation see `Achievement`
     public var achievements = [Achievement]()
+    /// An array of behaviours, for more documentation see `Behaviour`
     public var behaviours = [Behaviour]()
+    /// An array of subjects for BehaviourInLesson, for more documentation see `BehaviourForLesson`
     public var behaviourForLessons = [BehaviourForLesson]()
+    /// An array of detentions, for more documentation see `Detention`
     public var detentions = [Detention]()
     
+    /// An array of achievement types, for more documentation see `AchievementType`
     public var achievement_types = [AchievementType]()
+    /// An array of achievement activity types, for more documentation see `AchievementActivityType`
     public var achievement_activity_types = [AchievementActivityType]()
+    /// An array of achievement award types, for more documentation see `SimpleStore`
     public var achievement_award_types = [SimpleStore]()
     
+    /// Are achievement points editable by the current user
     public var achievement_points_editable: Bool!
+    /// Can detentions be managed by the current user
     public var detentionmanagement_enabled: Bool!
     
+    /// An array of behaviour types, for more documentation see `BehaviourType`
     public var behaviour_types = [BehaviourType]()
+    /// An array of behaviour activity types, for more documentation see `BehaviourActivityType`
     public var behaviour_activity_types = [BehaviourActivityType]()
+    /// An array of behaviour actions taken, for more documentation see `SimpleStore`
     public var behaviour_actions_taken = [SimpleStore]()
+    /// An array of behaviour bullying types, for more documentation see `SimpleStore`
     public var behaviour_bullying_types = [SimpleStore]()
+    /// An array of behaviour locations, for more documentation see `SimpleStore`
     public var behaviour_locations = [SimpleStore]()
+    /// An array of behaviour statuses, for more documentation see `SimpleStore`
     public var behaviour_statuses = [SimpleStore]()
+    /// An array of behaviour times, for more documentation see `SimpleStore`
     public var behaviour_times = [SimpleStore]()
 }
 

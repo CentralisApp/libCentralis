@@ -70,6 +70,7 @@ public struct Status {
     /// The upcoming lesson, usually shown on the Home Page. For more documentation see `MiniLesson`
     public var upcoming: MiniLesson!
     
+    /// The public init method for the class
     public init() {}
     
     /// Checks if the current auth token has expired. If the token is expired, will fire the notification ReAuth.

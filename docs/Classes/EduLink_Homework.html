@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           libCentralis Docs
         </a>
-         (42% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -67,9 +67,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/EduLink_Documents.html">EduLink_Documents</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/EduLink_Employee.html">EduLink_Employee</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/EduLink_Homework.html">EduLink_Homework</a>
@@ -272,7 +269,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A model for working with homework</p>
 
           </div>
         </section>
@@ -294,7 +291,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Retrieve a list of current and past homework of the user. For more documentation see <code><a href="../Structs/Homeworks.html">Homeworks</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -304,6 +301,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">homework</span><span class="p">(</span><span class="n">_</span> <span class="nv">rootCompletion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="n"><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rootCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler, for more documentation see <code><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -321,7 +337,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Retrieve the description of a homework</p>
 
                       </div>
                       <div class="declaration">
@@ -331,6 +347,61 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">homeworkDetails</span><span class="p">(</span><span class="n">_</span> <span class="nv">index</span><span class="p">:</span> <span class="kt">Int</span><span class="o">!</span><span class="p">,</span> <span class="n">_</span> <span class="nv">homework</span><span class="p">:</span> <span class="kt"><a href="../Structs/Homework.html">Homework</a></span><span class="o">!</span><span class="p">,</span> <span class="n">_</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Enums/HomeworkContext.html">HomeworkContext</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">rootCompletion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="n"><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The array index of the homework in it&rsquo;s respective array</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>homework</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The homework object</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If the homework is current or past</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rootCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler, for more documentation see <code><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -348,7 +419,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Toggle if a homework is marked as completed or not</p>
 
                       </div>
                       <div class="declaration">
@@ -359,32 +430,60 @@
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:12libCentralis16EduLink_HomeworkC12scrapeLeWork_4dictyAA0E7ContextO_SaySDySSypGGtFZ"></a>
-                    <a name="//apple_ref/swift/Method/scrapeLeWork(_:dict:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:12libCentralis16EduLink_HomeworkC12scrapeLeWork_4dictyAA0E7ContextO_SaySDySSypGGtFZ">scrapeLeWork(_:<wbr>dict:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">scrapeLeWork</span><span class="p">(</span><span class="n">_</span> <span class="nv">context</span><span class="p">:</span> <span class="kt"><a href="../Enums/HomeworkContext.html">HomeworkContext</a></span><span class="p">,</span> <span class="nv">dict</span><span class="p">:</span> <span class="p">[[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]])</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completed</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If the homework should be marked as completed or not</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>index</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The array index of the homework in it&rsquo;s respective array</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>context</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>If the homework is current or past</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rootCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler, for more documentation see <code><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

@@ -27,7 +27,7 @@ public class LoginManager {
     public func schoolProvisioning(schoolCode: String!, _ rootCompletion: @escaping completionHandler) {
         self.schoolCode = schoolCode
         if self.schoolCode == "DemoSchool" {
-            EduLinkAPI.shared.authorisedSchool.server = "https://demoapi.elihc.dev/api/uwu"
+            EduLinkAPI.shared.authorisedSchool.server = "https://demo.centralis.app/api/uwu"
             EduLinkAPI.shared.authorisedSchool.school_id = "1"
             self.schoolInfoz({ (success, error) -> Void in
                 return rootCompletion(success, error)

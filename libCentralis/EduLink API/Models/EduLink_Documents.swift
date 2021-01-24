@@ -7,8 +7,10 @@
 
 import Foundation
 
+/// A model for working with Documents
 public class EduLink_Documents {
-    
+    /// Retrieve a list of documents available to the user. For more documentation see `Document`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func documents(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -32,6 +34,11 @@ public class EduLink_Documents {
         })
     }
     
+    
+    /// Retrieve the document date and mime type
+    /// - Parameters:
+    ///   - document: The document the data is being parsed, for more documentation see `Document`
+    ///   - rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func document(_ document: Document, _ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken,
@@ -48,11 +55,18 @@ public class EduLink_Documents {
     }
 }
 
+/// The container for Document
 public struct Document {
+    /// The ID of the document
     public var id: String!
+    /// The title of the document
     public var summary: String!
+    /// The format of the document
     public var type: String!
+    /// When the document was last updated
     public var last_updated: String!
+    /// The data of the document
     public var data: String!
+    /// The mime type of the document
     public var mime_type: String!
 }

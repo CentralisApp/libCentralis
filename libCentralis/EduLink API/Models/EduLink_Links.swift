@@ -7,7 +7,10 @@
 
 import UIKit
 
+/// A model for retrieving links, 
 public class EduLink_Links {
+    /// Retrieve the links set by the school, for more documentation see `Link`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func links(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
@@ -39,8 +42,12 @@ public class EduLink_Links {
     }
 }
 
+/// A container for Links
 public struct Link {
+    /// The name of the link
     public var name: String!
+    /// The URL of the link
     public var link: String!
+    /// The image registered to the link
     public var image: UIImage!
 }
