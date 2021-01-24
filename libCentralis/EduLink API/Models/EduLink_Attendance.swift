@@ -15,6 +15,7 @@ public class EduLink_Attendance {
         ]
         NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Attendance", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Error") }
+            print(dict)
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, (result["error"] as? String ?? "Unknown Error")) }
             EduLinkAPI.shared.attendance.show_lesson = result["show_lesson"] as? Bool ?? false
