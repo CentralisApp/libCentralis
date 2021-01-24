@@ -7,7 +7,10 @@
 
 import UIKit
 
+/// The model for handling the register
 public class EduLink_Register {
+    /// Retrieve the register codes for the current school. Are used in Attendance
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func registerCodes(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -53,14 +56,24 @@ public class EduLink_Register {
     }
 }
 
+/// A container for RegisterCode
 public struct RegisterCode {
+    /// The code
     public var code: String!
+    /// If the code is actively being used
     public var active: Bool!
+    /// The name of the code
     public var name: String!
+    /// The type of code
     public var type: String!
+    /// If the code is classed as an authorised_absence
     public var is_authorised_absence: Bool!
+    /// If the code is included in attendance statistics
     public var is_statistical: Bool!
+    /// If the code is a statistical late
     public var is_late: Bool!
+    /// If the code is for a present user
     public var present: Bool!
+    /// The colour generated for the code. The colour is generated based on it's code, so is always the same
     public var colour: UIColor!
 }

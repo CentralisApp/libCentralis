@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// The model for getting status info
 public class EduLink_Status {
+    /// Retrieve status for the currently logged in user, for more documentation see `Status`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func status(rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
@@ -54,15 +57,22 @@ public class EduLink_Status {
     }
 }
 
+/// A container for Status
 public struct Status {
+    /// Number of new messages
     public var new_messages: Int!
+    /// Number of new forms
     public var new_forms: Int!
+    /// The Date of when the auth token expires
     public var expires: Date?
+    /// The current lesson, usually shown on the Home Page. For more documentation see `MiniLesson`
     public var current: MiniLesson!
+    /// The upcoming lesson, usually shown on the Home Page. For more documentation see `MiniLesson`
     public var upcoming: MiniLesson!
     
     public init() {}
     
+    /// Checks if the current auth token has expired. If the token is expired, will fire the notification ReAuth.
     public func hasExpired() {
         if let expires = self.expires {
             if expires > Date() {
@@ -72,9 +82,14 @@ public struct Status {
     }
 }
 
+/// A container for a MiniLesson belonging to `Status`
 public struct MiniLesson {
+    /// The time the lesson starts
     public var startDate: Date?
+    /// The time the lesson ends
     public var endDate: Date?
+    /// The room the lesson is in
     public var room: String!
+    /// The subject for the lesson
     public var subject: String!
 }

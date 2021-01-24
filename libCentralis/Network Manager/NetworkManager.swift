@@ -7,6 +7,10 @@
 
 import Foundation
 
+/// The completion handler used by every request in the library
+/// - Parameters:
+///   - success: If the API request was succesful
+///   - error: The error code returned from EduLink
 public typealias completionHandler = (_ success: Bool, _ error: String?) -> ()
 
 internal class NetworkManager {
@@ -47,13 +51,23 @@ internal class NetworkManager {
     }
 }
 
+/// The request body that is sent with every request to EduLink
 fileprivate struct EdulinkBody: Encodable {
+    /// The current json version
     var jsonrpc = "2.0"
+    /// The query method curently being posted
     var method: String!
+    /// The random UUID that is sent with every request, for more documentation see `UUID`
     var uuid = UUID.uuid
+    /// The ID of the request, 1 every time works fine
     var id = "1"
+    /// The specific request parameters, usually containing authtoken
     var params: [String : String]!
     
+    /// The initialiser for the struct. This is used to generate the json body.
+    /// - Parameters:
+    ///   - method: The query method
+    ///   - params: The query parameters
     init(method: String, params: [String : String]) {
         self.method = method
         self.params = params
