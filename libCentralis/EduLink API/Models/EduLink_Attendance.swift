@@ -24,14 +24,12 @@ public class EduLink_Attendance {
                 for lesson in lesson {
                     var l = AttendanceLesson()
                     l.subject = lesson["subject"] as? String ?? "Not Given"
-                    if let values = lesson["values"] as? [String : Any] {
-                        var av = AttendanceValue()
-                        av.present = values["present"] as? Int ?? 0
-                        av.late = values["late"] as? Int ?? 0
-                        av.unauthorised = values["unauthorised"] as? Int ?? 0
-                        av.absent = values["absent"] as? Int ?? 0
-                        l.values = av
-                    }
+                    var av = AttendanceValue()
+                    av.present = lesson["present"] as? Int ?? 0
+                    av.late = lesson["late"] as? Int ?? 0
+                    av.unauthorised = lesson["unauthorised"] as? Int ?? 0
+                    av.absent = lesson["absent"] as? Int ?? 0
+                    l.values = av
                     if let exceptions = lesson["exceptions"] as? [[String : Any]] {
                         for exception in exceptions {
                             var e = AttendanceException()
