@@ -10,10 +10,11 @@ import Foundation
 public class EduLink_Personal {
     
     class public func personal(_ rootCompletion: @escaping completionHandler) {
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Personal")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Personal\",\"params\":{\"learner_id\":\"\(EduLinkAPI.shared.authorisedUser.id!)\",\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "learner_id" : EduLinkAPI.shared.authorisedUser.id,
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Personal", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, (result["error"] as? String ?? "Unknown Error")) }

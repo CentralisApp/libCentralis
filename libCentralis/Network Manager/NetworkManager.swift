@@ -1,6 +1,6 @@
 //
 //  NetworkManager.swift
-//  Shade
+//  libCentralis
 //
 //  Created by AW on 18/10/2020.
 //
@@ -11,7 +11,7 @@ public typealias completionHandler = (_ success: Bool, _ error: String?) -> ()
 
 public class NetworkManager {
 
-    public typealias requestDictCompletion = (_ success: Bool, _ dict: [String : Any]) -> ()
+    public typealias rdc = (_ success: Bool, _ dict: [String : Any]) -> ()
     
     public func generateStringFromDict(_ dict: [String : String]) -> String {
         let encoder = JSONEncoder()
@@ -23,17 +23,16 @@ public class NetworkManager {
         return "Error"
     }
     
-    class public func requestWithDict(url: URL, method: String, headers: [String : String]?, jsonbody: String?, completion: @escaping requestDictCompletion) {
-        var request = URLRequest(url: url)
-        request.httpMethod = method
-        request.httpBody = jsonbody?.data(using: .utf8)
-        
-        if let headers = headers {
-            for (key, value) in headers {
-                request.setValue(value, forHTTPHeaderField: key)
-            }
-        }
-        
+    class public func requestWithDict(url: String?, requestMethod: String, params: [String : String], completion: @escaping rdc) {
+        var c = URLComponents(string: url ?? EduLinkAPI.shared.authorisedSchool.server!)!
+        c.queryItems = [URLQueryItem(name: "method", value: requestMethod)]
+        var request = URLRequest(url: c.url!)
+        request.httpMethod = "POST"
+        let b = EdulinkBody(method: requestMethod, params: params)
+        guard let jd = try? JSONEncoder().encode(b) else { return completion(false, [String : Any]())}
+        request.httpBody = jd
+        request.setValue(requestMethod, forHTTPHeaderField: "x-api-method")
+        request.setValue("application/json;charset=utf-8", forHTTPHeaderField: "Content-Type")
         let task = URLSession.shared.dataTask(with: request) { (data, response, error) -> Void in
             if let data = data {
                 do {
@@ -45,5 +44,18 @@ public class NetworkManager {
             } else { completion(false, [String : Any]()) }
         }
         task.resume()
+    }
+}
+
+struct EdulinkBody: Encodable {
+    var jsonrpc = "2.0"
+    var method: String!
+    var uuid = UUID.uuid
+    var id = "1"
+    var params: [String : String]!
+    
+    init(method: String, params: [String : String]) {
+        self.method = method
+        self.params = params
     }
 }

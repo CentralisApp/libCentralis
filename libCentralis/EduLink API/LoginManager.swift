@@ -17,7 +17,6 @@ public class LoginManager {
     
     public func schoolProvisioning(schoolCode: String!, _ rootCompletion: @escaping completionHandler) {
         self.schoolCode = schoolCode
-        
         if self.schoolCode == "DemoSchool" {
             EduLinkAPI.shared.authorisedSchool.server = "https://demoapi.elihc.dev/api/uwu"
             EduLinkAPI.shared.authorisedSchool.school_id = "1"
@@ -27,8 +26,10 @@ public class LoginManager {
             return
         }
         
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"School.FromCode\",\"params\":{\"code\":\"\(schoolCode!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: URL(string: "https://provisioning.edulinkone.com/?method=School.FromCode")!, method: "POST", headers: nil, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "code" : self.schoolCode
+        ]
+        NetworkManager.requestWithDict(url: "https://provisioning.edulinkone.com/", requestMethod: "School.FromCode", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Connection Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred") }
             if !(result["success"] as? Bool ?? false) {
@@ -49,10 +50,11 @@ public class LoginManager {
     }
     
     private func schoolInfoz(_ zCompletion: @escaping completionHandler) {
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.SchoolDetails\",\"params\":{\"establishment_id\":\"2\",\"from_app\":false},\"uuid\":\"FuckYouOvernetData\",\"id\":\"1\"}"
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.SchoolDetails")
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        NetworkManager.requestWithDict(url: url!, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "establishment_id" : "2",
+            "from_app" : "false"
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.SchoolDetails", params: params, completion: { (success, dict) -> Void in
             if !success { return zCompletion(false, "Network Connection Error") }
             guard let result = dict["result"] as? [String : Any] else { return zCompletion(false, "Unknown Error Ocurred") }
             if !(result["success"] as? Bool ?? false) { return zCompletion(false, "Unknown Error Ocurred") }
@@ -69,10 +71,13 @@ public class LoginManager {
     public func loginz(username: String, password: String, _ rootCompletion: @escaping completionHandler) {
         self.username = username
         self.password = password
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Login")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Login\",\"params\":{\"from_app\":false,\"ui_info\":{\"format\":2,\"version\":\"0.5.113\",\"git_sha\":\"FuckYouOvernetData\"},\"fcm_token_old\":\"none\",\"username\":\"\(username)\",\"password\":\"\(password)\",\"establishment_id\":2},\"uuid\":\"FuckYouOvernetData\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "fcm_token_old" : "none",
+            "username" : self.username,
+            "password" : self.password,
+            "establishment_id" : "2"
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Login", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Connection Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred") }
             if !(result["success"] as? Bool ?? false) {
