@@ -35,7 +35,8 @@ public class EduLink_Documents {
         let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Document")!
         let headers: [String : String] = [
             "Content-Type" : "application/json;charset=utf-8",
-            "Accept" : "application/json, text/plain, */*",
+            //"Accept" : "application/json, text/plain, */*",
+            "x-api-method" : "EduLink.Document"
         ]
         let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Document\",\"params\":{\"document_id\":\"\(document.id!)\",\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
         NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
