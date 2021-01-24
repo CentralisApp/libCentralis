@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// A model for working with Catering
 public class EduLink_Catering {
+    /// Retrieve the balance and transactions of a user. For more documentation see `Catering`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func catering(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
@@ -38,18 +41,28 @@ public class EduLink_Catering {
     }
 }
 
+/// A container for a CateringTransaction
 public struct CateringTransaction {
+    /// The ID of the transaction
     public var id: String!
+    /// The date of the transaction
     public var date: String!
+    /// The items that were purchased, for more documentation see `CateringItem`
     public var items = [CateringItem]()
 }
 
+/// A container for a CateringItem
 public struct CateringItem {
+    /// The item that was purchased
     public var item: String!
+    /// The price of the item
     public var price: Double!
 }
 
+/// The container for Catering
 public struct Catering {
+    /// The balance of the user
     public var balance: Double!
+    /// An array of transactions by the user, for more documentation see `CateringTransaction`
     public var transactions = [CateringTransaction]()
 }

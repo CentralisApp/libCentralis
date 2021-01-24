@@ -7,9 +7,9 @@
 
 import UIKit
 
+/// A model for working with Achievements and Behaviours
 public class EduLink_Achievement {
-    
-    class public func achievementBehaviourLookups(_ rootCompletion: @escaping completionHandler) {
+    class private func achievementBehaviourLookups(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
         ]
@@ -137,7 +137,7 @@ public class EduLink_Achievement {
         })
     }
     
-    class public func scrapeAllNeededData(_ result: [String : Any]) {
+    class private func scrapeAllNeededData(_ result: [String : Any]) {
         if let achievement_types = result["achievement_types"] as? [[String : Any]] {
             EduLinkAPI.shared.achievementBehaviourLookups.achievement_types.removeAll()
             for achievement_type in achievement_types {

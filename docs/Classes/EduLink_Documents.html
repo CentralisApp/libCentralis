@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           libCentralis Docs
         </a>
-         (42% documented)
+         (72% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -67,9 +67,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/EduLink_Documents.html">EduLink_Documents</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Classes/EduLink_Employee.html">EduLink_Employee</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/EduLink_Homework.html">EduLink_Homework</a>
@@ -272,7 +269,7 @@
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>A model for working with Documents</p>
 
           </div>
         </section>
@@ -294,7 +291,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Retrieve a list of documents available to the user. For more documentation see <code><a href="../Structs/Document.html">Document</a></code></p>
 
                       </div>
                       <div class="declaration">
@@ -304,6 +301,25 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">documents</span><span class="p">(</span><span class="n">_</span> <span class="nv">rootCompletion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="n"><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rootCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler, for more documentation see <code><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -321,7 +337,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Retrieve the document date and mime type</p>
 
                       </div>
                       <div class="declaration">
@@ -331,6 +347,37 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kd">func</span> <span class="nf">document</span><span class="p">(</span><span class="n">_</span> <span class="nv">document</span><span class="p">:</span> <span class="kt"><a href="../Structs/Document.html">Document</a></span><span class="p">,</span> <span class="n">_</span> <span class="nv">rootCompletion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="n"><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>document</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The document the data is being parsed, for more documentation see <code><a href="../Structs/Document.html">Document</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>rootCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The completion handler, for more documentation see <code><a href="../Typealiases.html#/s:12libCentralis17completionHandlera">completionHandler</a></code></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

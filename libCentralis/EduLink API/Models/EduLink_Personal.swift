@@ -7,8 +7,10 @@
 
 import Foundation
 
+/// The model for handling Personal
 public class EduLink_Personal {
-    
+    /// Retrieve the user personal info, `Personal`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func personal(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -25,7 +27,7 @@ public class EduLink_Personal {
         })
     }
     
-    class public func scrapeTime(_ personal: [String : Any]) {
+    class fileprivate func scrapeTime(_ personal: [String : Any]) {
         EduLinkAPI.shared.personal.id = "\(personal["id"] ?? "Not Given")"
         EduLinkAPI.shared.personal.forename = personal["forename"] as? String ?? "Not Given"
         EduLinkAPI.shared.personal.surname = personal["surname"] as? String ?? "Not Given"
@@ -64,26 +66,48 @@ public class EduLink_Personal {
     
 }
 
+/// A container for personal
 public struct Personal {
+    /// The ID for the user
     public var id: String!
+    /// The forename for the user
     public var forename: String!
+    /// The surname for the user
     public var surname: String!
+    /// The gender of the user
     public var gender: String!
+    /// The admission number of the user
     public var admission_number: String!
+    /// The unique pupil number of the user
     public var unique_pupil_number: String!
+    /// The unique learner number of the user
     public var unique_learner_number: String!
+    /// The date of birth of the user
     public var date_of_birth: String!
+    /// The admission date of the user
     public var admission_date: String!
+    /// The email of the user
     public var email: String!
+    /// The phone number registered for the user
     public var phone: String!
+    /// The adress registered for the user
     public var address: String!
+    /// The users form group
     public var form: String!
+    /// The form room for the user
     public var room_code: String!
+    /// The users form teacher
     public var form_teacher: String!
+    /// The ethnicity of the user
     public var ethnicity: String!
+    /// The national student ID of the user
     public var national_id: String!
+    /// An array of langauges the user is fluent in
     public var languages = [String]()
+    /// A personal note for the user
     public var note: String!
+    /// The year the user is part of
     public var year: String!
+    /// The house group of the user
     public var house_group: String!
 }

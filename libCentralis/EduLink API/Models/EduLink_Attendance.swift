@@ -7,7 +7,10 @@
 
 import UIKit
 
+/// A model for working with attendance
 public class EduLink_Attendance {
+    /// Retrieve the attendance data of the curent user. For more documentation see `Attendance`
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func attendance(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -79,10 +82,15 @@ public class EduLink_Attendance {
     }
 }
 
+/// A container for attendance values
 public struct AttendanceValue {
+    /// The number of present marks
     public var present: Int!
+    /// The number of unauthorised absence marks
     public var unauthorised: Int!
+    /// The number of absenct marks
     public var absent: Int!
+    /// The number of late marks
     public var late: Int!
     
     init() {
@@ -93,10 +101,15 @@ public struct AttendanceValue {
     }
 }
 
+/// A container for `AttendanceValue` colours. The colours are generated based on their string name.
 public struct AttendanceColours {
+    /// The colour for present marks
     public var present: UIColor!
+    /// The colour for unauthorised marks
     public var unauthorised: UIColor!
+    /// The colour for absent marks
     public var absent: UIColor!
+    /// The colour for late marks
     public var late: UIColor!
     
     public init() {
@@ -108,35 +121,58 @@ public struct AttendanceColours {
     }
 }
 
+/// A container for the Stautory Year
 public struct StatutoryYear {
+    /// The attendance values for that year, for more documenation see `AttendanceValue`
     public var values = AttendanceValue()
+    /// An array of attendance exceptions for that year, for more documentation see `AttendanceException`
     public var exceptions = [AttendanceException]()
 }
 
+/// A container for an attendance exception
 public struct AttendanceException {
+    /// The date of the exception
     public var date: String!
+    /// The description of the exception
     public var description: String!
+    /// The type of exception
     public var type: String!
+    /// The period of the exception
     public var period: String!
 }
 
+/// A container for an AttendanceLesson.
 public struct AttendanceLesson {
+    /// The subject for the attendance
     public var subject: String!
+    /// The attendance values for the lesson, for more documentation see `AttendanceValue`
     public var values = AttendanceValue()
+    /// An array of exceptions for that lesson, for more documentation see `AttendanceException`
     public var exceptions = [AttendanceException]()
 }
 
+/// A container for an Attendance Statutory Month
 public struct AttendanceStatutory {
+    /// The name of the month
     public var month: String!
+    /// The attendance values for that month, for more documentation see `AttendanceValue`
     public var values = AttendanceValue()
+    /// An array of attendance exceptions for that month, for more documenation see `AttendanceException`
     public var exceptions = [AttendanceException]()
 }
 
+/// A container for Attendance
 public struct Attendance {
+    /// A shared container for AttendanceColours, for more documenation see `AttendanceColours`
     public var attendance_colours = AttendanceColours()
+    /// An array of subject attendance records
     public var lessons = [AttendanceLesson]()
+    /// An array of statutory month attendance record
     public var statutory = [AttendanceStatutory]()
+    /// The current attendance for the statutory year
     public var statutoryyear = StatutoryYear()
+    /// Should show statutory data
     public var show_statutory = false
+    /// Should show lesson attendance
     public var show_lesson = false
 }

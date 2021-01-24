@@ -7,8 +7,8 @@
 
 import Foundation
 
-public class EduLink_Employee {
-    class public func handle(_ employees: [[String : Any]]) {
+internal class EduLink_Employee {
+    class internal func handle(_ employees: [[String : Any]]) {
         for employee in employees {
             var a = Employee()
             a.id = "\(employee["id"] ?? "Not Given")"
