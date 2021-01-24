@@ -10,10 +10,10 @@ import UIKit
 public class EduLink_Achievement {
     
     class public func achievementBehaviourLookups(_ rootCompletion: @escaping completionHandler) {
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.AchievementBehaviourLookups")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.AchievementBehaviourLookups\",\"params\":{\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.AchievementBehaviourLookups", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, (result["error"] as? String ?? "Unknown Error")) }
@@ -23,10 +23,11 @@ public class EduLink_Achievement {
     }
     
     class public func achievement(_ zCompletion: @escaping completionHandler) {
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Achievement")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Achievement\",\"params\":{\"learner_id\":\"\(EduLinkAPI.shared.authorisedUser.id!)\",\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "learner_id" : EduLinkAPI.shared.authorisedUser.id,
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Achievement", params: params, completion: { (success, dict) -> Void in
             if !success { return zCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return zCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return zCompletion(false, "Unknown Error") }
@@ -61,10 +62,11 @@ public class EduLink_Achievement {
     }
     
     class public func behaviour(_ zCompletion: @escaping completionHandler) {
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Behaviour")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Behaviour\",\"params\":{\"learner_id\":\"\(EduLinkAPI.shared.authorisedUser.id!)\",\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\",\"format\":\"2\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "learner_id" : EduLinkAPI.shared.authorisedUser.id,
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Behaviour", params: params, completion: { (success, dict) -> Void in
             if !success { return zCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return zCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return zCompletion(false, "Unknown Error") }

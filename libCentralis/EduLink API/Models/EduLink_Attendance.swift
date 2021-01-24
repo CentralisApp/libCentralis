@@ -9,10 +9,11 @@ import UIKit
 
 public class EduLink_Attendance {
     class public func attendance(_ rootCompletion: @escaping completionHandler) {
-        let url = URL(string: "\(EduLinkAPI.shared.authorisedSchool.server!)?method=EduLink.Attendance")!
-        let headers: [String : String] = ["Content-Type" : "application/json;charset=utf-8"]
-        let body = "{\"jsonrpc\":\"2.0\",\"method\":\"EduLink.Attendance\",\"params\":{\"learner_id\":\"\(EduLinkAPI.shared.authorisedUser.id!)\",\"authtoken\":\"\(EduLinkAPI.shared.authorisedUser.authToken!)\",\"format\":\"3\"},\"uuid\":\"\(UUID.uuid)\",\"id\":\"1\"}"
-        NetworkManager.requestWithDict(url: url, method: "POST", headers: headers, jsonbody: body, completion: { (success, dict) -> Void in
+        let params: [String : String] = [
+            "learner_id" : EduLinkAPI.shared.authorisedUser.id,
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Attendance", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, (result["error"] as? String ?? "Unknown Error")) }
@@ -23,14 +24,12 @@ public class EduLink_Attendance {
                 for lesson in lesson {
                     var l = AttendanceLesson()
                     l.subject = lesson["subject"] as? String ?? "Not Given"
-                    if let values = lesson["values"] as? [String : Any] {
-                        var av = AttendanceValue()
-                        av.present = values["present"] as? Int ?? 0
-                        av.late = values["late"] as? Int ?? 0
-                        av.unauthorised = values["unauthorised"] as? Int ?? 0
-                        av.absent = values["absent"] as? Int ?? 0
-                        l.values = av
-                    }
+                    var av = AttendanceValue()
+                    av.present = lesson["present"] as? Int ?? 0
+                    av.late = lesson["late"] as? Int ?? 0
+                    av.unauthorised = lesson["unauthorised"] as? Int ?? 0
+                    av.absent = lesson["absent"] as? Int ?? 0
+                    l.values = av
                     if let exceptions = lesson["exceptions"] as? [[String : Any]] {
                         for exception in exceptions {
                             var e = AttendanceException()
@@ -49,18 +48,16 @@ public class EduLink_Attendance {
                 for statutory in statutory {
                     var s = AttendanceStatutory()
                     s.month = statutory["month"] as? String ?? "Not Given"
-                    if let values = statutory["values"] as? [String : Any] {
-                        var av = AttendanceValue()
-                        av.present = values["present"] as? Int ?? 0
-                        av.late = values["late"] as? Int ?? 0
-                        av.unauthorised = values["unauthorised"] as? Int ?? 0
-                        av.absent = values["absent"] as? Int ?? 0
-                        s.values = av
-                        EduLinkAPI.shared.attendance.statutoryyear.values.present += av.present
-                        EduLinkAPI.shared.attendance.statutoryyear.values.absent += av.absent
-                        EduLinkAPI.shared.attendance.statutoryyear.values.late += av.late
-                        EduLinkAPI.shared.attendance.statutoryyear.values.unauthorised += av.unauthorised
-                    }
+                    var av = AttendanceValue()
+                    av.present = statutory["present"] as? Int ?? 0
+                    av.late = statutory["late"] as? Int ?? 0
+                    av.unauthorised = statutory["unauthorised"] as? Int ?? 0
+                    av.absent = statutory["absent"] as? Int ?? 0
+                    s.values = av
+                    EduLinkAPI.shared.attendance.statutoryyear.values.present += av.present
+                    EduLinkAPI.shared.attendance.statutoryyear.values.absent += av.absent
+                    EduLinkAPI.shared.attendance.statutoryyear.values.late += av.late
+                    EduLinkAPI.shared.attendance.statutoryyear.values.unauthorised += av.unauthorised
                     if let exceptions = statutory["exceptions"] as? [[String : Any]] {
                         for exception in exceptions {
                             var e = AttendanceException()
