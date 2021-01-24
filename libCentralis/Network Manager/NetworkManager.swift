@@ -7,13 +7,17 @@
 
 import Foundation
 
+/// The completion handler used by every request in the library
+/// - Parameters:
+///   - success: If the API request was succesful
+///   - error: The error code returned from EduLink
 public typealias completionHandler = (_ success: Bool, _ error: String?) -> ()
 
-public class NetworkManager {
+internal class NetworkManager {
 
-    public typealias rdc = (_ success: Bool, _ dict: [String : Any]) -> ()
+    internal typealias rdc = (_ success: Bool, _ dict: [String : Any]) -> ()
     
-    public func generateStringFromDict(_ dict: [String : String]) -> String {
+    internal func generateStringFromDict(_ dict: [String : String]) -> String {
         let encoder = JSONEncoder()
         if let jsonData = try? encoder.encode(dict) {
             if let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -23,7 +27,7 @@ public class NetworkManager {
         return "Error"
     }
     
-    class public func requestWithDict(url: String?, requestMethod: String, params: [String : String], completion: @escaping rdc) {
+    class internal func requestWithDict(url: String?, requestMethod: String, params: [String : String], completion: @escaping rdc) {
         var c = URLComponents(string: url ?? EduLinkAPI.shared.authorisedSchool.server!)!
         c.queryItems = [URLQueryItem(name: "method", value: requestMethod)]
         var request = URLRequest(url: c.url!)
@@ -47,13 +51,23 @@ public class NetworkManager {
     }
 }
 
-struct EdulinkBody: Encodable {
+/// The request body that is sent with every request to EduLink
+fileprivate struct EdulinkBody: Encodable {
+    /// The current json version
     var jsonrpc = "2.0"
+    /// The query method curently being posted
     var method: String!
+    /// The random UUID that is sent with every request, for more documentation see `UUID`
     var uuid = UUID.uuid
+    /// The ID of the request, 1 every time works fine
     var id = "1"
+    /// The specific request parameters, usually containing authtoken
     var params: [String : String]!
     
+    /// The initialiser for the struct. This is used to generate the json body.
+    /// - Parameters:
+    ///   - method: The query method
+    ///   - params: The query parameters
     init(method: String, params: [String : String]) {
         self.method = method
         self.params = params

@@ -7,7 +7,13 @@
 
 import UIKit
 
-public class ColourConverter {
+
+///A class to convert a string to a UIColor, based on it's unicode scalar
+internal class ColourConverter {
+    
+    /// Create a UIColor based on the input seed
+    /// - Parameter seed: The string you want to convert
+    /// - Returns: The resulting UIColor
     public func colourFromString(_ seed: String) -> UIColor {
         var total: Int = 0
         for u in seed.unicodeScalars {

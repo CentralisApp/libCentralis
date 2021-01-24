@@ -7,14 +7,23 @@
 
 import UIKit
 
+/// The class responsible for logging in the user
 public class LoginManager {
     
+    /// The shared interface, should always be used
     public static let shared = LoginManager()
     
+    /// The currently logged in username
     public var username: String!
+    /// The currently logged in password
     public var password: String!
+    /// The currently logged in school code
     public var schoolCode: String!
     
+    /// The method that should be used for finding school from code.
+    /// - Parameters:
+    ///   - schoolCode: The schoolCode currently being requested
+    ///   - rootCompletion: The completion handler, for more documentation see `completionHandler`
     public func schoolProvisioning(schoolCode: String!, _ rootCompletion: @escaping completionHandler) {
         self.schoolCode = schoolCode
         if self.schoolCode == "DemoSchool" {
@@ -67,7 +76,12 @@ public class LoginManager {
             return zCompletion(true, nil)
         })
     }
-
+    
+    /// For attempting to login, should only be called if the school URL has already been set
+    /// - Parameters:
+    ///   - username: The username being used to login
+    ///   - password: The password being used to login
+    ///   - rootCompletion: The completion handler, for more documentation see `completionHandler`
     public func loginz(username: String, password: String, _ rootCompletion: @escaping completionHandler) {
         self.username = username
         self.password = password
@@ -110,6 +124,11 @@ public class LoginManager {
         })
     }
     
+    
+    /// For logging in a user that is already saved, usually faster as schoolCode is already cached
+    /// - Parameters:
+    ///   - savedLogin: The user being logged in, for more documentation see `SavedLogin`
+    ///   - zCompletion: The completion handler, for more documentation see `completionHandler`
     public func quickLogin(_ savedLogin: SavedLogin, _ zCompletion: @escaping completionHandler) {
         EduLinkAPI.shared.clear()
         self.schoolCode = savedLogin.schoolCode
@@ -122,6 +141,7 @@ public class LoginManager {
         })
     }
     
+    /// Save the login of the user currently signed in. Logins are saved to the UserDefault `LoginCache`
     public func saveLogin() {
         if self.schoolCode.isEmpty || self.username.isEmpty || self.password.isEmpty { return }
         guard let schoolLogo = EduLinkAPI.shared.authorisedSchool.schoolLogo else { return }
@@ -144,8 +164,10 @@ public class LoginManager {
         KeyChainManager.save(key: self.username, data: Data(password.utf8))
         UserDefaults.standard.setValue(l, forKey: "LoginCache")
     }
-
-    public func removeLogin(uwuIn: SavedLogin) {
+    
+    /// Remove a saved login
+    /// - Parameter login: The login being removed, for more documentation see `SavedLogin`
+    public func removeLogin(login: SavedLogin) {
         let decoder = JSONDecoder()
         var l = UserDefaults.standard.object(forKey: "LoginCache") as? [Data] ?? [Data]()
         var logins = [SavedLogin]()
@@ -154,10 +176,10 @@ public class LoginManager {
                 logins.append(a)
             }
         }
-        for (index, login) in logins.enumerated() where ((login.schoolCode == uwuIn.schoolCode) && (login.username == uwuIn.username)) {
+        for (index, login) in logins.enumerated() where ((login.schoolCode == login.schoolCode) && (login.username == login.username)) {
             l.remove(at: index)
         }
-        KeyChainManager.delete(key: uwuIn.username)
+        KeyChainManager.delete(key: login.username)
         UserDefaults.standard.setValue(l, forKey: "LoginCache")
     }
 
@@ -281,16 +303,35 @@ public class LoginManager {
     }
 }
 
+/// A container for a saved login. Is saved to the UserDefault `LoginCache`
 public struct SavedLogin: Codable {
+    /// The saved username
     public var username: String!
+    /// The saved school code
     public var schoolCode: String!
+    /// The saved school server URL
     public var schoolServer: String!
+    /// The saved school name
     public var schoolName: String!
+    /// The saved school ID
     public var schoolID: String!
+    /// The saved user profile picture
     public var image: Data!
+    /// The saved user forename
     public var forename: String!
+    /// The saved user surname
     public var surname: String!
     
+    /// The method for creating a SavedLogin
+    /// - Parameters:
+    ///   - username: The username to tbe saved
+    ///   - schoolServer: The school server to be saved
+    ///   - image: The user profile picture to be saved
+    ///   - schoolName: The school name to be saved
+    ///   - forename: The user forename to be saved
+    ///   - surname: The user surname to be saved
+    ///   - schoolID: The school ID to be saved
+    ///   - schoolCode: The school code to be saved
     init(username: String!, schoolServer: String!, image: Data!, schoolName: String!, forename: String!, surname: String!, schoolID: String!, schoolCode: String!) {
         self.username = username
         self.schoolServer = schoolServer
@@ -303,72 +344,126 @@ public struct SavedLogin: Codable {
     }
 }
 
+/// Container for the user currently logged in
 public struct AuthorisedUser {
+    /// The authtoken, this is used for almost every network request. It will expire after a time given in `EduLink.Status`
     public var authToken: String!
+    /// The users school name
     public var school: String!
+    /// The users forename
     public var forename: String!
+    /// The users surname
     public var surname: String!
+    /// The users gender
     public var gender: String!
+    /// The users learner_id
     public var id: String!
+    /// The users form group ID
     public var form_group_id: String!
+    /// The users year group ID
     public var year_group_id: String!
+    /// The users community group ID
     public var community_group_id: String!
+    /// The users profile picture
     public var avatar: UIImage!
+    /// The type of user, will either be ```learner```, ```parent``` or ```employee```
     public var types: [String]!
+    /// The menus that the user has access to, usually shown on the main page of the app
     public var personalMenus = [SimpleStore]()
 }
 
+/// Container for the school of the currently logged in user
 public struct AuthorisedSchool {
+    /// The server for the school. Most API requests are pointed here
     public var server: String!
+    /// The school's ID
     public var school_id: String!
+    /// The logo for the school
     public var schoolLogo: UIImage!
+    /// Container for SchoolInfo, for more documentation see `SchoolInfo`
     public var schoolInfo = SchoolInfo()
 }
 
+/// A container for classrooms
 public struct Room {
+    /// The ID of the room
     public var id: String!
+    /// The name of the room
     public var name: String!
+    /// The shortened room code
     public var code: String!
 }
 
+/// A container for form groups
 public struct FormGroup {
+    /// The ID of the group
     public var id: String!
+    /// The name of the group
     public var name: String!
+    /// The ID of the year group it belongs to
     public var year_group_ids = [Int]()
+    /// The ID of the form tutor, for more documentation see `Employee`
     public var employee_id: Int!
+    /// The ID of the form room, for more documentation see `Room`
     public var room_id: Int!
 }
 
+/// A container for teaching group, or class
 public struct TeachingGroup {
+    /// The ID of the group
     public var id: String!
+    /// The name of the group
     public var name: String!
+    /// The ID of the year group it belongs to
     public var year_group_ids = [Int]()
+    /// The ID of the teacher, for more documentation see `Employee`
     public var employee_id: Int!
 }
 
+/// A container for subjects offered at the school
 public struct Subject {
+    /// The ID of the subject
     public var id: String!
+    /// The name of the subject
     public var name: String!
+    /// If the subject is actively being offered at the school
     public var active: Bool!
 }
 
+/// Container for Report Card Target Type
 public struct ReportCardTargetType {
+    /// The ID of the report card
     public var id: String!
+    /// The code belonging to the card
     public var code: String!
+    /// The description of the report card
     public var description: String!
 }
 
+/// A container for info about the logged in school. All info here is stored after a succesful login.
 public struct SchoolInfo {
+    /// An array of classrooms at the school, for more documentation see `Room`
     public var rooms = [Room]()
+    /// An array of year groups at the school, for more documentation see `SimpleStore`
     public var yearGroups = [SimpleStore]()
+    /// An array of community groups at the school, for more documentation see `SimpleStore`
     public var communityGroups = [SimpleStore]()
+    /// An array of admission groups at the school,  for more documentation see `SimpleStore`
     public var admissionGroups = [SimpleStore]()
+    /// An array of intake groups at the school, for more documentation see `SimpleStore`
     public var intakeGroups = [SimpleStore]()
+    /// An array of form groups  at the school, for more documentation see `FormGroup`
     public var formGroups = [FormGroup]()
+    /// An array of teaching groups at the school, for more documentation see `TeachingGroup`
     public var teachingGroups = [TeachingGroup]()
+    /// An array of subjects at the school, for more documentation see `Subject`
     public var subjects = [Subject]()
+    /// An array of report card target types at the school, for more documentation see `ReportCardTargetType`
     public var reportCardTargetTypes = [ReportCardTargetType]()
+    /// An array of employees at the school, for more documentation see `Employee`
     public var employees = [Employee]()
+    /// An array of lesson codes at the school, for more documentation see `RegisterCode`
     public var lesson_codes = [RegisterCode]()
+    /// An array of statutory codes at the school, for more documentation see `RegisterCode`
     public var statutory_codes = [RegisterCode]()
 }

@@ -7,7 +7,10 @@
 
 import Foundation
 
+/// The model for getting timetable info
 public class EduLink_Timetable {
+    /// Retrieve timetable data for the currently logged in user
+    /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
     class public func timetable(_ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
             "learner_id" : EduLinkAPI.shared.authorisedUser.id,
@@ -23,13 +26,13 @@ public class EduLink_Timetable {
         })
     }
     
-    class public func date() -> String {
+    class private func date() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy'-'MM'-'dd'"
         return dateFormatter.string(from: Date())
     }
     
-    class public func scrapeResult(_ result: [String : Any]) {
+    class private func scrapeResult(_ result: [String : Any]) {
         guard let weeks = result["weeks"] as? [[String : Any]] else { return }
         EduLinkAPI.shared.weeks.removeAll()
         for week in weeks {
@@ -82,33 +85,56 @@ public class EduLink_Timetable {
     }
 }
 
+/// A container for a Timetable Week
 public struct Week {
+    /// An array of days for that week, for more documentation see `Day`
     public var days = [Day]()
+    /// If the week is the current or not
     public var is_current: Bool!
+    /// The name of the week
     public var name: String!
 }
 
+/// A container for a Timetable Day
 public struct Day {
+    /// The date of the day
     public var date: String!
+    /// If the day is the current or not
     public var isCurrent: Bool!
+    /// The name of the day
     public var name: String!
+    /// An array of periods for that week, for more documentation see `Period`
     public var periods = [Period]()
 }
 
+/// A container for a Timetable Lesson
 public struct Lesson {
+    /// The ID of the belonging period, for more documentation see `Period`
     public var period_id: String!
+    /// The room for the lesson
     public var room_name: String!
+    /// If the Lesson has had a room change
     public var moved: Bool!
+    /// The teacher for the lesson
     public var teacher: String!
+    /// The teaching group for the lesson
     public var group: String!
+    /// The subject for the lesson
     public var subject: String!
 }
 
+/// A container for a Timetable Period
 public struct Period {
+    /// If the period is a free period
     public var empty: Bool!
+    /// What time the period starts
     public var start_time: String!
+    /// What time the period ends
     public var end_time: String!
+    /// The ID of the period
     public var id: String!
+    /// The name of the period
     public var name: String!
+    /// The lesson for that period, nil if is free period. For more documentation see `Lesson`
     public var lesson: Lesson!
 }
