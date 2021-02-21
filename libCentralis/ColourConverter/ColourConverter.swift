@@ -7,7 +7,6 @@
 
 import UIKit
 
-
 ///A class to convert a string to a UIColor, based on it's unicode scalar
 internal class ColourConverter {
     
