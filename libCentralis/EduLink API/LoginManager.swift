@@ -20,6 +20,51 @@ public class LoginManager {
     /// The currently logged in school code
     public var schoolCode: String!
     
+    public func botProvisioning(schoolCode: String, _ rootCompletion: @escaping completionHandler) {
+        let params: [String : String] = [
+            "code" : self.schoolCode
+        ]
+        NetworkManager.requestWithDict(url: "https://provisioning.edulinkone.com/", requestMethod: "School.FromCode", params: params, completion: { (success, dict) -> Void in
+            if !success { return rootCompletion(false, "Network Connection Error") }
+            guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred") }
+            if !(result["success"] as? Bool ?? false) {
+                if (result["error"] as! String).contains("Unknown SCHOOL ID") {
+                    return rootCompletion(false, "Invalid School Code")
+                } else {
+                    return rootCompletion(false, "Unknown Error Ocurred")
+                }
+            }
+            guard let school = result["school"] as? [String : Any],
+                  let server = school["server"] as? String else { return rootCompletion(false, "Unknown Error Ocurred") }
+            rootCompletion(true, server)
+        })
+    }
+    
+    public typealias botLoginCompletion = (_ success: Bool, _ authToken: String?, _  id: String?) -> ()
+    public func botLogin(username: String, password: String, server: String, _ rootCompletion: @escaping botLoginCompletion) {
+        let params: [String : String] = [
+            "fcm_token_old" : "none",
+            "username" : username,
+            "password" : password,
+            "establishment_id" : "2"
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Login", params: params, completion: { (success, dict) -> Void in
+            if !success { return rootCompletion(false, "Network Connection Error", nil) }
+            guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred", nil) }
+            if !(result["success"] as? Bool ?? false) {
+                if (result["error"] as! String) == "The username or password is incorrect. Please try typing your password again" {
+                    return rootCompletion(false, "Incorrect Username/Password", nil)
+                } else {
+                    return rootCompletion(false, "Unknown Error Ocurred", nil)
+                }
+            }
+            guard let user = result["user"] as? [String : Any],
+                  let id = user["id"] as? String,
+                  let auth = result["authtoken"] as? String else { return rootCompletion(false, "Unknown Error Ocurred", nil) }
+            rootCompletion(true, auth, id)
+        })
+    }
+    
     /// The method that should be used for finding school from code.
     /// - Parameters:
     ///   - schoolCode: The schoolCode currently being requested
