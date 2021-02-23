@@ -22,7 +22,7 @@ public class LoginManager {
     
     public func botProvisioning(schoolCode: String, _ rootCompletion: @escaping completionHandler) {
         let params: [String : String] = [
-            "code" : self.schoolCode
+            "code" : schoolCode
         ]
         NetworkManager.requestWithDict(url: "https://provisioning.edulinkone.com/", requestMethod: "School.FromCode", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Connection Error") }
