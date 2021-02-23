@@ -5,7 +5,7 @@
 //  Created by AW on 30/11/2020.
 //
 
-import UIKit
+import Foundation
 
 /// The class responsible for logging in the user
 public class LoginManager {
@@ -71,7 +71,7 @@ public class LoginManager {
             let imageData = establishment["logo"] as? String ?? ""
             EduLinkAPI.shared.authorisedUser.school = establishment["name"] as? String ?? "Not Given"
             if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                EduLinkAPI.shared.authorisedSchool.schoolLogo = UIImage(data: decodedData)
+                EduLinkAPI.shared.authorisedSchool.schoolLogo = decodedData
             }
             return zCompletion(true, nil)
         })
@@ -114,7 +114,7 @@ public class LoginManager {
             if let avatar = user["avatar"] as? [String : Any] {
                 let imageData = avatar["photo"] as? String ?? ""
                 if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                    EduLinkAPI.shared.authorisedUser.avatar = UIImage(data: decodedData)
+                    EduLinkAPI.shared.authorisedUser.avatar = decodedData
                 }
             }
             self.personalMenu(result)
@@ -145,7 +145,6 @@ public class LoginManager {
     public func saveLogin() {
         if self.schoolCode.isEmpty || self.username.isEmpty || self.password.isEmpty { return }
         guard let schoolLogo = EduLinkAPI.shared.authorisedSchool.schoolLogo else { return }
-        guard let png = schoolLogo.pngData() else { return }
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
         
@@ -157,7 +156,7 @@ public class LoginManager {
                 logins.append(a)
             }
         }
-        let a = SavedLogin(username: self.username, schoolServer: EduLinkAPI.shared.authorisedSchool.server, image: png, schoolName: EduLinkAPI.shared.authorisedUser.school, forename: EduLinkAPI.shared.authorisedUser.forename, surname: EduLinkAPI.shared.authorisedUser.surname, schoolID: EduLinkAPI.shared.authorisedSchool.school_id, schoolCode: self.schoolCode)
+        let a = SavedLogin(username: self.username, schoolServer: EduLinkAPI.shared.authorisedSchool.server, image: schoolLogo, schoolName: EduLinkAPI.shared.authorisedUser.school, forename: EduLinkAPI.shared.authorisedUser.forename, surname: EduLinkAPI.shared.authorisedUser.surname, schoolID: EduLinkAPI.shared.authorisedSchool.school_id, schoolCode: self.schoolCode)
         if let encoded = try? encoder.encode(a) {
             l.append(encoded)
         }
@@ -365,7 +364,7 @@ public struct AuthorisedUser {
     /// The users community group ID
     public var community_group_id: String!
     /// The users profile picture
-    public var avatar: UIImage!
+    public var avatar: Data!
     /// The type of user, will either be ```learner```, ```parent``` or ```employee```
     public var types: [String]!
     /// The menus that the user has access to, usually shown on the main page of the app
@@ -379,7 +378,7 @@ public struct AuthorisedSchool {
     /// The school's ID
     public var school_id: String!
     /// The logo for the school
-    public var schoolLogo: UIImage!
+    public var schoolLogo: Data!
     /// Container for SchoolInfo, for more documentation see `SchoolInfo`
     public var schoolInfo = SchoolInfo()
 }

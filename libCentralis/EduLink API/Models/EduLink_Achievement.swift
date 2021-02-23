@@ -5,7 +5,7 @@
 //  Created by AW on 03/12/2020.
 //
 
-import UIKit
+import Foundation
 
 /// A model for working with Achievements and Behaviours
 public class EduLink_Achievement {

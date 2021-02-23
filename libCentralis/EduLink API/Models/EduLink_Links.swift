@@ -1,13 +1,6 @@
-//
-//  EduLink_Links.swift
-//  Centralis
-//
-//  Created by AW on 11/12/2020.
-//
+import Foundation
 
-import UIKit
-
-/// A model for retrieving links, 
+/// A model for retrieving links,
 public class EduLink_Links {
     /// Retrieve the links set by the school, for more documentation see `Link`
     /// - Parameter rootCompletion: The completion handler, for more documentation see `completionHandler`
@@ -28,12 +21,8 @@ public class EduLink_Links {
                 if var imageData = link["icon"] as? String {
                     imageData = imageData.replacingOccurrences(of: "data:image/png;base64,", with: "")
                     if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                        l.image = UIImage(data: decodedData)
-                    } else {
-                        l.image = UIImage(systemName: "link.circle.fill")
+                        l.image = decodedData
                     }
-                } else {
-                    l.image = UIImage(systemName: "link.circle.fill")
                 }
                 EduLinkAPI.shared.links.append(l)
             }
@@ -49,5 +38,5 @@ public struct Link {
     /// The URL of the link
     public var link: String!
     /// The image registered to the link
-    public var image: UIImage!
+    public var image: Data!
 }
