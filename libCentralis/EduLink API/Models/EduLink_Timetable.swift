@@ -21,8 +21,26 @@ public class EduLink_Timetable {
             if !success { return rootCompletion(false, "Network Error") }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error") }
             if !(result["success"] as? Bool ?? false) { return rootCompletion(false, (result["error"] as? String ?? "Unknown Error")) }
-            self.scrapeResult(result)
+            EduLinkAPI.shared.weeks.removeAll()
+            if let weeks = self.scrapeResult(result) {
+                EduLinkAPI.shared.weeks = weeks
+            }
             rootCompletion(true, nil)
+        })
+    }
+    
+    public typealias botTimetableCompletion = (_ success: Bool, _ error: String?, _ weeks: [Week]?) -> ()
+    class public func botTimetable(auth: String, server: String, id: String, completionHandler: @escaping botTimetableCompletion) {
+        let params: [String : String] = [
+            "learner_id" : id,
+            "authtoken" : auth,
+            "date" : "\(date())"
+        ]
+        NetworkManager.requestWithDict(url: server, requestMethod: "EduLink.Timetable", params: params, completion: { (success, dict) -> Void in
+            if !success { return completionHandler(false, "Network Error", nil) }
+            guard let result = dict["result"] as? [String : Any] else { return completionHandler(false, "Unknown Error", nil) }
+            if !(result["success"] as? Bool ?? false) { return completionHandler(false, (result["error"] as? String ?? "Unknown Error"), nil) }
+            completionHandler(true, nil, self.scrapeResult(result))
         })
     }
     
@@ -32,21 +50,21 @@ public class EduLink_Timetable {
         return dateFormatter.string(from: Date())
     }
     
-    class private func scrapeResult(_ result: [String : Any]) {
-        guard let weeks = result["weeks"] as? [[String : Any]] else { return }
-        EduLinkAPI.shared.weeks.removeAll()
+    class private func scrapeResult(_ result: [String : Any]) -> [Week]? {
+        guard let weeks = result["weeks"] as? [[String : Any]] else { return nil }
+        var owo = [Week]()
         for week in weeks {
             var we = Week()
             we.is_current = week["is_current"] as? Bool ?? false
             we.name = week["name"] as? String ?? "Not Given"
-            guard let days = week["days"] as? [[String : Any]] else { return }
+            guard let days = week["days"] as? [[String : Any]] else { return nil }
             for day in days {
                 var de = Day()
                 de.date = day["date"] as? String ?? "Not Given"
                 de.isCurrent = day["is_current"] as? Bool ?? false
                 de.name = day["name"] as? String ?? "Not Given"
                 guard let lessons = day["lessons"] as? [[String : Any]], let periods = day["periods"] as? [[String : Any]] else {
-                    return
+                    return nil
                 }
                 
                 var memLesson = [Lesson]()
@@ -80,8 +98,9 @@ public class EduLink_Timetable {
                 }
                 we.days.append(de)
             }
-            EduLinkAPI.shared.weeks.append(we)
+            owo.append(we)
         }
+        return owo
     }
 }
 
