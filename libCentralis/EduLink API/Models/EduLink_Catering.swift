@@ -42,7 +42,7 @@ public class EduLink_Catering {
     
     class public func botCatering(_ auth: String, _ server: String, _ completionHandler: @escaping completionHandler) {
         let params: [String : String] = [
-            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+            "authtoken" : auth
         ]
         NetworkManager.requestWithDict(url: server, requestMethod: "EduLink.Catering", params: params, completion: { (success, dict) -> Void in
             if !success { return completionHandler(false, "Network Error") }
