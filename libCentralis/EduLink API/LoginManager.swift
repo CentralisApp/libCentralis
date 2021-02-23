@@ -48,7 +48,7 @@ public class LoginManager {
             "password" : password,
             "establishment_id" : "2"
         ]
-        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Login", params: params, completion: { (success, dict) -> Void in
+        NetworkManager.requestWithDict(url: server, requestMethod: "EduLink.Login", params: params, completion: { (success, dict) -> Void in
             if !success { return rootCompletion(false, "Network Connection Error", nil) }
             guard let result = dict["result"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred", nil) }
             if !(result["success"] as? Bool ?? false) {
