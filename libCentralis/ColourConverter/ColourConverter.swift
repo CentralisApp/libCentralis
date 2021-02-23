@@ -12,7 +12,7 @@ internal class ColourConverter {
     
     /// Create a UIColor based on the input seed
     /// - Parameter seed: The string you want to convert
-    /// - Returns: The resulting UIColor
+    /// - Returns: The resulting CGColor
     public func colourFromString(_ seed: String) -> CGColor {
         var total: Int = 0
         for u in seed.unicodeScalars {
@@ -28,6 +28,10 @@ internal class ColourConverter {
         srand48(total / 200)
         let b = CGFloat(drand48())
         
-        return CGColor(srgbRed: r, green: g, blue: b, alpha: 1)
+        if #available(OSX 10.15, *) {
+            return CGColor(srgbRed: r, green: g, blue: b, alpha: 1)
+        } else {
+            return CGColor(red: r, green: g, blue: b, alpha: 1)
+        }
     }
 }
