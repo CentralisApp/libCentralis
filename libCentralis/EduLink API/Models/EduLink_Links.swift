@@ -5,7 +5,7 @@
 //  Created by AW on 11/12/2020.
 //
 
-import UIKit
+import Foundation
 
 /// A model for retrieving links, 
 public class EduLink_Links {
@@ -28,12 +28,8 @@ public class EduLink_Links {
                 if var imageData = link["icon"] as? String {
                     imageData = imageData.replacingOccurrences(of: "data:image/png;base64,", with: "")
                     if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                        l.image = UIImage(data: decodedData)
-                    } else {
-                        l.image = UIImage(systemName: "link.circle.fill")
+                        l.image = decodedData
                     }
-                } else {
-                    l.image = UIImage(systemName: "link.circle.fill")
                 }
                 EduLinkAPI.shared.links.append(l)
             }
@@ -49,5 +45,5 @@ public struct Link {
     /// The URL of the link
     public var link: String!
     /// The image registered to the link
-    public var image: UIImage!
+    public var image: Data!
 }

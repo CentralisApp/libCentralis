@@ -25,4 +25,15 @@ public struct SimpleStore {
     public var id: String!
     /// The belonging Name
     public var name: String!
+    
+    static func generate(_ a: [[String : Any]]) -> [SimpleStore] {
+        var b = [SimpleStore]()
+        for c in a {
+            var d = SimpleStore()
+            d.id = "\(c["id"] ?? "Not Given")"
+            d.name = "\(c["name"] ?? "Not Given")"
+            b.append(d)
+        }
+        return b
+    }
 }

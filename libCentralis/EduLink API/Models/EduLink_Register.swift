@@ -5,7 +5,7 @@
 //  Created by AW on 18/12/2020.
 //
 
-import UIKit
+import CoreGraphics
 
 /// The model for handling the register
 public class EduLink_Register {
@@ -75,5 +75,5 @@ public struct RegisterCode {
     /// If the code is for a present user
     public var present: Bool!
     /// The colour generated for the code. The colour is generated based on it's code, so is always the same
-    public var colour: UIColor!
+    public var colour: CGColor!
 }

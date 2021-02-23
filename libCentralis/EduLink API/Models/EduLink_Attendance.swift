@@ -5,7 +5,7 @@
 //  Created by AW on 19/12/2020.
 //
 
-import UIKit
+import CoreGraphics
 
 /// A model for working with attendance
 public class EduLink_Attendance {
@@ -105,13 +105,13 @@ public struct AttendanceValue {
 /// A container for `AttendanceValue` colours. The colours are generated based on their string name.
 public struct AttendanceColours {
     /// The colour for present marks
-    public var present: UIColor!
+    public var present: CGColor!
     /// The colour for unauthorised marks
-    public var unauthorised: UIColor!
+    public var unauthorised: CGColor!
     /// The colour for absent marks
-    public var absent: UIColor!
+    public var absent: CGColor!
     /// The colour for late marks
-    public var late: UIColor!
+    public var late: CGColor!
     
     /// Sets the colour of all the values, based on their string names
     public init() {

@@ -1,12 +1,6 @@
 {
   "warnings": [
-    {
-      "file": "/Users/amy/Documents/GitHub/libCentralis/libCentralis/EduLink API/Models/EduLink_Attendance.swift",
-      "line": 115,
-      "symbol": "AttendanceColours.init()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    }
+
   ],
   "source_directory": "/Users/amy/Documents/GitHub/libCentralis"
 }

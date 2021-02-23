@@ -5,7 +5,7 @@
 //  Created by AW on 30/11/2020.
 //
 
-import UIKit
+import Foundation
 
 /// The class responsible for logging in the user
 public class LoginManager {
@@ -71,7 +71,7 @@ public class LoginManager {
             let imageData = establishment["logo"] as? String ?? ""
             EduLinkAPI.shared.authorisedUser.school = establishment["name"] as? String ?? "Not Given"
             if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                EduLinkAPI.shared.authorisedSchool.schoolLogo = UIImage(data: decodedData)
+                EduLinkAPI.shared.authorisedSchool.schoolLogo = decodedData
             }
             return zCompletion(true, nil)
         })
@@ -103,18 +103,17 @@ public class LoginManager {
             }
             EduLinkAPI.shared.authorisedUser.authToken =  result["authtoken"] as? String
             guard let user = result["user"] as? [String : Any] else { return rootCompletion(false, "Unknown Error Ocurred") }
-            EduLinkAPI.shared.authorisedUser.id = "\(user["id"] ?? "Not Given")"
-            EduLinkAPI.shared.authorisedUser.gender = user["gender"] as? String ?? "Not Given"
-            EduLinkAPI.shared.authorisedUser.forename = user["forename"] as? String ?? "Not Given"
-            EduLinkAPI.shared.authorisedUser.surname = user["surname"] as? String ?? "Not Given"
-            EduLinkAPI.shared.authorisedUser.community_group_id = "\(user["community_group_id"] ?? "Not Given")"
-            EduLinkAPI.shared.authorisedUser.form_group_id = "\(user["form_group_id"] ?? "Not Given")"
-            EduLinkAPI.shared.authorisedUser.year_group_id = "\(user["year_group_id"] ?? "Not Given")"
             EduLinkAPI.shared.authorisedUser.types = user["types"] as? [String] ?? [String]()
+            if EduLinkAPI.shared.authorisedUser.types.contains("learner") {
+                EduLinkAPI.shared.authorisedUser.activeStudent = self.generateStudent(user)
+            } else if EduLinkAPI.shared.authorisedUser.types.contains("parent") {
+                
+            }
+
             if let avatar = user["avatar"] as? [String : Any] {
                 let imageData = avatar["photo"] as? String ?? ""
                 if let decodedData = Data(base64Encoded: imageData, options: .ignoreUnknownCharacters) {
-                    EduLinkAPI.shared.authorisedUser.avatar = UIImage(data: decodedData)
+                    EduLinkAPI.shared.authorisedUser.avatar = decodedData
                 }
             }
             self.personalMenu(result)
@@ -124,6 +123,17 @@ public class LoginManager {
         })
     }
     
+    private func generateStudent(_ user: [String : Any]) -> Student {
+        var s = Student()
+        s.community_group_id = "\(user["community_group_id"] ?? "Not Given")"
+        s.forename = user["forename"] as? String ?? "Not Given"
+        s.surname = user["surname"] as? String ?? "Not Given"
+        s.gender = user["gender"] as? String ?? "Not Given"
+        s.id = "\(user["id"] ?? "Not Given")"
+        s.form_group_id = "\(user["form_group_id"] ?? "Not Given")"
+        s.year_group_id = "\(user["year_group_id"] ?? "Not Given")"
+        return s
+    }
     
     /// For logging in a user that is already saved, usually faster as schoolCode is already cached
     /// - Parameters:
@@ -145,7 +155,6 @@ public class LoginManager {
     public func saveLogin() {
         if self.schoolCode.isEmpty || self.username.isEmpty || self.password.isEmpty { return }
         guard let schoolLogo = EduLinkAPI.shared.authorisedSchool.schoolLogo else { return }
-        guard let png = schoolLogo.pngData() else { return }
         let decoder = JSONDecoder()
         let encoder = JSONEncoder()
         
@@ -157,7 +166,7 @@ public class LoginManager {
                 logins.append(a)
             }
         }
-        let a = SavedLogin(username: self.username, schoolServer: EduLinkAPI.shared.authorisedSchool.server, image: png, schoolName: EduLinkAPI.shared.authorisedUser.school, forename: EduLinkAPI.shared.authorisedUser.forename, surname: EduLinkAPI.shared.authorisedUser.surname, schoolID: EduLinkAPI.shared.authorisedSchool.school_id, schoolCode: self.schoolCode)
+        let a = SavedLogin(username: self.username, schoolServer: EduLinkAPI.shared.authorisedSchool.server, image: schoolLogo	, schoolName: EduLinkAPI.shared.authorisedUser.school, forename: EduLinkAPI.shared.authorisedUser.forename, surname: EduLinkAPI.shared.authorisedUser.surname, schoolID: EduLinkAPI.shared.authorisedSchool.school_id, schoolCode: self.schoolCode)
         if let encoded = try? encoder.encode(a) {
             l.append(encoded)
         }
@@ -184,13 +193,8 @@ public class LoginManager {
     }
 
     private func personalMenu(_ dict: [String : Any]) {
-        if let personal_menu = dict["personal_menu"] as? [[String : String]] {
-            for menu in personal_menu {
-                var personalMenu = SimpleStore()
-                personalMenu.id = "\(menu["id"] ?? "Not Given")"
-                personalMenu.name = menu["name"] ?? "Not Given"
-                EduLinkAPI.shared.authorisedUser.personalMenus.append(personalMenu)
-            }
+        if let personal_menu = dict["personal_menu"] as? [[String : Any]] {
+            EduLinkAPI.shared.authorisedUser.personalMenus = SimpleStore.generate(personal_menu)
         }
     }
     
@@ -208,43 +212,23 @@ public class LoginManager {
             }
             
             //MARK: - Year Groups
-            if let year_groups = establishment["year_groups"] as? [[String : String]] {
-                for yearGroup in year_groups {
-                    var yg = SimpleStore()
-                    yg.id = "\(yearGroup["id"] ?? "Not Given")"
-                    yg.name = yearGroup["name"] ?? "Not Given"
-                    EduLinkAPI.shared.authorisedSchool.schoolInfo.yearGroups.append(yg)
-                }
+            if let year_groups = establishment["year_groups"] as? [[String : Any]] {
+                EduLinkAPI.shared.authorisedSchool.schoolInfo.yearGroups = SimpleStore.generate(year_groups)
             }
             
             //MARK: - Community Groups
             if let community_groups = establishment["community_groups"] as? [[String : String]] {
-                for communityGroup in community_groups {
-                    var cg = SimpleStore()
-                    cg.id = "\(communityGroup["id"] ?? "Not Given")"
-                    cg.name = communityGroup["name"] ?? "Not Given"
-                    EduLinkAPI.shared.authorisedSchool.schoolInfo.communityGroups.append(cg)
-                }
+                EduLinkAPI.shared.authorisedSchool.schoolInfo.communityGroups = SimpleStore.generate(community_groups)
             }
             
             //MARK: - Admission Groups
             if let admission_groups = establishment["applicant_admission_groups"] as? [[String : String]] {
-                for admissionGroup in admission_groups {
-                    var ag = SimpleStore()
-                    ag.id = "\(admissionGroup["id"] ?? "Not Given")"
-                    ag.name = admissionGroup["name"] ?? "Not Given"
-                    EduLinkAPI.shared.authorisedSchool.schoolInfo.admissionGroups.append(ag)
-                }
+                EduLinkAPI.shared.authorisedSchool.schoolInfo.admissionGroups = SimpleStore.generate(admission_groups)
             }
             
             //MARK: - Intake Groups
             if let intake_groups = establishment["applicant_intake_groups"] as? [[String : String]] {
-                for intakeGroup in intake_groups {
-                    var ig = SimpleStore()
-                    ig.id = "\(intakeGroup["id"] ?? "Not Given")"
-                    ig.name = intakeGroup["name"] ?? "Not Given"
-                    EduLinkAPI.shared.authorisedSchool.schoolInfo.intakeGroups.append(ig)
-                }
+                EduLinkAPI.shared.authorisedSchool.schoolInfo.intakeGroups = SimpleStore.generate(intake_groups)
             }
             
             //MARK: - Form Groups
@@ -350,26 +334,38 @@ public struct AuthorisedUser {
     public var authToken: String!
     /// The users school name
     public var school: String!
-    /// The users forename
-    public var forename: String!
-    /// The users surname
-    public var surname: String!
-    /// The users gender
-    public var gender: String!
-    /// The users learner_id
-    public var id: String!
-    /// The users form group ID
-    public var form_group_id: String!
-    /// The users year group ID
-    public var year_group_id: String!
-    /// The users community group ID
-    public var community_group_id: String!
-    /// The users profile picture
-    public var avatar: UIImage!
     /// The type of user, will either be ```learner```, ```parent``` or ```employee```
     public var types: [String]!
     /// The menus that the user has access to, usually shown on the main page of the app
     public var personalMenus = [SimpleStore]()
+    
+    public var activeStudent: Int!
+    public var students = [Student]()
+}
+
+public enum loginType {
+    case learner
+    case parent
+    case employee
+}
+
+public struct Student {
+    public var forename: String!
+    public var surname: String!
+    public var gender: String!
+    public var id: String!
+    public var form_group_id: String!
+    public var year_group_id: String!
+    public var community_group_id: String!
+    public var avatar: Data!
+}
+
+public struct Parent {
+    public var forename: String!
+    public var surname: String!
+    public var gender: String!
+    public var id: String!
+    public var avatar: Data!
 }
 
 /// Container for the school of the currently logged in user
@@ -379,7 +375,7 @@ public struct AuthorisedSchool {
     /// The school's ID
     public var school_id: String!
     /// The logo for the school
-    public var schoolLogo: UIImage!
+    public var schoolLogo: Data!
     /// Container for SchoolInfo, for more documentation see `SchoolInfo`
     public var schoolInfo = SchoolInfo()
 }

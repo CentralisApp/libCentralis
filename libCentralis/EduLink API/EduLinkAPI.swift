@@ -5,7 +5,7 @@
 //  Created by AW on 29/11/2020.
 //
 
-import UIKit
+import Foundation
 
 /// The main interface for libCentralis. This will contain any data that is recieved from the API.
 public class EduLinkAPI {

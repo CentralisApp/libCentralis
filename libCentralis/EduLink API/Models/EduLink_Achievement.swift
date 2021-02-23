@@ -5,7 +5,7 @@
 //  Created by AW on 03/12/2020.
 //
 
-import UIKit
+import CoreGraphics
 
 /// A model for working with Achievements and Behaviours
 public class EduLink_Achievement {
@@ -170,13 +170,7 @@ public class EduLink_Achievement {
         }
         
         if let achievement_award_types = result["achievement_award_types"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.achievement_award_types.removeAll()
-            for achievement_award_type in achievement_award_types {
-                var aat = SimpleStore()
-                aat.id = "\(achievement_award_type["id"] ?? "Not Given")"
-                aat.name = achievement_award_type["name"] as? String
-                EduLinkAPI.shared.achievementBehaviourLookups.achievement_award_types.append(aat)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.achievement_award_types = SimpleStore.generate(achievement_award_types)
         }
         
         if let behaviour_types = result["behaviour_types"] as? [[String : Any]] {
@@ -209,53 +203,23 @@ public class EduLink_Achievement {
         }
         
         if let behaviour_actions_taken = result["behaviour_actions_taken"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_actions_taken.removeAll()
-            for behaviour_actions_taken in behaviour_actions_taken {
-                var bat = SimpleStore()
-                bat.id = "\(behaviour_actions_taken["id"] ?? "Not Given")"
-                bat.name = "\(behaviour_actions_taken["name"] ?? "Not Given")"
-                EduLinkAPI.shared.achievementBehaviourLookups.behaviour_actions_taken.append(bat)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_actions_taken = SimpleStore.generate(behaviour_actions_taken)
         }
         
         if let behaviour_bullying_types = result["behaviour_bullying_types"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_bullying_types.removeAll()
-            for behaviour_bullying_type in behaviour_bullying_types {
-                var bbt = SimpleStore()
-                bbt.id = "\(behaviour_bullying_type["id"] ?? "Not Given")"
-                bbt.name = "\(behaviour_bullying_type["name"] ?? "Not Given")"
-                EduLinkAPI.shared.achievementBehaviourLookups.behaviour_bullying_types.append(bbt)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_bullying_types = SimpleStore.generate(behaviour_bullying_types)
         }
         
         if let behaviour_locations = result["behaviour_locations"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_locations.removeAll()
-            for behaviour_location in behaviour_locations {
-                var bl = SimpleStore()
-                bl.id = "\(behaviour_location["id"] ?? "Not Given")"
-                bl.name = "\(behaviour_location["name"] ?? "Not Given")"
-                EduLinkAPI.shared.achievementBehaviourLookups.behaviour_locations.append(bl)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_locations = SimpleStore.generate(behaviour_locations)
         }
         
         if let behaviour_statuses = result["behaviour_statuses"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_statuses.removeAll()
-            for behaviour_status in behaviour_statuses {
-                var bs = SimpleStore()
-                bs.id = "\(behaviour_status["id"] ?? "Not Given")"
-                bs.name = "\(behaviour_status["name"] ?? "Not Given")"
-                EduLinkAPI.shared.achievementBehaviourLookups.behaviour_statuses.append(bs)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_statuses = SimpleStore.generate(behaviour_statuses)
         }
         
         if let behaviour_times = result["behaviour_times"] as? [[String : Any]] {
-            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_times.removeAll()
-            for behaviour_time in behaviour_times {
-                var bt = SimpleStore()
-                bt.id = "\(behaviour_time["id"] ?? "Not Given")"
-                bt.name = "\(behaviour_time["name"] ?? "Not Given")"
-                EduLinkAPI.shared.achievementBehaviourLookups.behaviour_times.append(bt)
-            }
+            EduLinkAPI.shared.achievementBehaviourLookups.behaviour_times = SimpleStore.generate(behaviour_times)
         }
     }
 }
