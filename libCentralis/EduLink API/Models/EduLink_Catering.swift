@@ -39,6 +39,21 @@ public class EduLink_Catering {
             return rootCompletion(true, nil)
         })
     }
+    
+    class public func botCatering(_ auth: String, _ completionHandler: @escaping completionHandler) {
+        let params: [String : String] = [
+            "authtoken" : EduLinkAPI.shared.authorisedUser.authToken
+        ]
+        NetworkManager.requestWithDict(url: nil, requestMethod: "EduLink.Catering", params: params, completion: { (success, dict) -> Void in
+            if !success { return completionHandler(false, "Network Error") }
+            guard let result = dict["result"] as? [String : Any] else { return completionHandler(false, "Unknown Error") }
+            if !(result["success"] as? Bool ?? false) { return completionHandler(false, (result["error"] as? String ?? "Unknown Error")) }
+            let balance = result["balance"] as? Double ?? 0.0
+            let numstring = String(format: "%03.2f", balance)
+            completionHandler(true, "£\(numstring)")
+        })
+    }
+
 }
 
 /// A container for a CateringTransaction
